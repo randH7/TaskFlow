@@ -1,6 +1,7 @@
 package com.rand.TaskFlow.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class TeamMember extends User {
 
+    @NotBlank
     private boolean isLeader;
 
     @ManyToMany
