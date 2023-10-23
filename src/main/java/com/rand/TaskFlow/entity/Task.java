@@ -25,14 +25,6 @@ public class Task {
     @NotBlank
     private Project project;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tbl_team_member_tasks",
-            joinColumns = { @JoinColumn(name = "task_id")},
-            inverseJoinColumns = { @JoinColumn(name = "username")}
-    )
-    private List<Task> tasks;
-
     @NotBlank
     @FutureOrPresent
     private Date startDate;
@@ -50,6 +42,6 @@ public class Task {
 
     @Enumerated
     @NotBlank
-    private ProjectStatus projectStatus;
+    private PriorityStatus priorityStatus;
 
 }

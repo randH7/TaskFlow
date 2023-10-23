@@ -15,7 +15,7 @@ import java.util.List;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Manger extends User {
 
-    @OneToMany(mappedBy = "tbl_manger")
+    @OneToMany(mappedBy = "manger")
     private List<Project> projects;
 
 }

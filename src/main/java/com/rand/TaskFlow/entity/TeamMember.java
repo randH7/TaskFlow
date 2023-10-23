@@ -13,20 +13,22 @@ import java.util.List;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class TeamMember extends User {
 
-    @ManyToMany
-    @JoinTable(
-            name = "tbl_team_member_projects",
-            joinColumns = { @JoinColumn(name = "username")},
-            inverseJoinColumns = { @JoinColumn(name = "project_id")}
-    )
-    private List<Project> projects;
+    private boolean isLeader;
 
     @ManyToMany
     @JoinTable(
-            name = "tbl_team_member_tasks",
+            name = "tbl_project_assignment",
+            joinColumns = { @JoinColumn(name = "username")},
+            inverseJoinColumns = { @JoinColumn(name = "project_id")}
+    )
+    private List<ProjectAssignment> projectAssignments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tbl_task_assignment",
             joinColumns = { @JoinColumn(name = "username")},
             inverseJoinColumns = { @JoinColumn(name = "task_id")}
     )
-    private List<Task> tasks;
+    private List<TaskAssignment> taskAssignments;
 
 }

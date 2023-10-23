@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tbl_project")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Project {
 
     @Id
@@ -21,16 +21,16 @@ public class Project {
     private String projectName;
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "manger")
     @NotBlank
     private Manger manger;
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "leader")
     @NotBlank
-    private Leader leader;
+    private TeamMember leader;
 
-    @OneToMany(mappedBy = "tbl_project")
+    @OneToMany(mappedBy = "project")
     @NotBlank
     private List<Task> tasks;
 
@@ -49,13 +49,4 @@ public class Project {
     @NotBlank
     private ProjectStatus projectStatus;
 
-    public Project(String projectName, Manger manger, Leader leader, Date startDate, Date dueDate, String description, ProjectStatus projectStatus) {
-        this.projectName = projectName;
-        this.manger = manger;
-        this.leader = leader;
-        this.startDate = startDate;
-        this.dueDate = dueDate;
-        this.description = description;
-        this.projectStatus = projectStatus;
-    }
 }
