@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.Set;
+
+import static jakarta.persistence.FetchType.EAGER;
+
 @Entity
 @Table(name = "tbl_user")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -28,5 +32,8 @@ public class User {
     private String jobTitle;
 
     private boolean active;
+
+    @ManyToMany(fetch = EAGER)
+    private Set<Role> roles;
 
 }
