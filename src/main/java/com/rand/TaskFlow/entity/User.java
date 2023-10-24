@@ -27,16 +27,6 @@ public class User {
     @NotBlank
     private String jobTitle;
 
-    @NotBlank
     private boolean active;
-
-    public User(String username, String email, String password, String employName, String jobTitle) {
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
-        setEmployName(employName);
-        setJobTitle(jobTitle);
-        this.active = true;
-    }
 
 }

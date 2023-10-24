@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tbl_manger")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class Manger extends User {
 
     @OneToMany(mappedBy = "manger")

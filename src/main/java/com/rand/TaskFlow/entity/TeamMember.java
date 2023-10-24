@@ -11,10 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "tbl_team_member")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class TeamMember extends User {
 
-    @NotBlank
+
     private boolean isLeader;
 
     @ManyToMany
