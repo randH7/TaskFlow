@@ -54,4 +54,19 @@ public class UserServiceImpl implements UserService {
         return userRepo.existsByEmail(email);
     }
 
+    @Override
+    public User getUserByUsernameOrEmail(String usernameOrEmail) {
+        return userRepo.findByUsernameOrEmail(usernameOrEmail);
+    }
+
+    @Override
+    public boolean isPasswordValid(User userFound, String password) {
+
+        if(userFound.getPassword().equals(password)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
