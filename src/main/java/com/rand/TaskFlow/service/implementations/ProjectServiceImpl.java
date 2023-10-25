@@ -38,11 +38,15 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project(newProject.getProjectName(), mangerSelect, leaderSelect, newProject.getStartDate(), newProject.getDueDate(), newProject.getDescription(), ProjectStatus.IN_PROGRESS);
 
         projectRepo.save(project);
+        ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelect, projectRepo.findByProjectName(newProject.getProjectName()));
+        projectAssignmentRepo.save(projectAssignment);
 
         for (String teamMemberUsername: newProject.getTeamMembersUsername()) {
             TeamMember teamMemberSelected = teamMemberRepo.findByUsername(teamMemberUsername);
-            ProjectAssignment projectAssignment = new ProjectAssignment(teamMemberSelected, projectRepo.findByProjectName(newProject.getProjectName()));
-            projectAssignmentRepo.save(projectAssignment);
+            if (projectAssignmentRepo.findByTeamMemberAndProject(teamMemberSelected, projectRepo.findByProjectName(newProject.getProjectName())).isEmpty()){
+                projectAssignment = new ProjectAssignment(teamMemberSelected, projectRepo.findByProjectName(newProject.getProjectName()));
+                projectAssignmentRepo.save(projectAssignment);
+            }
         }
 
     }
