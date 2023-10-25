@@ -11,15 +11,17 @@ import static jakarta.persistence.FetchType.EAGER;
 @Entity
 @Table(name = "tbl_user")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class User {
 
     @Id
     @NotBlank
+    @Column(unique = true)
     private String username;
 
     @NotBlank
     @Email
+    @Column(unique = true)
     private String email;
 
     @NotBlank
@@ -34,6 +36,11 @@ public class User {
     private boolean active;
 
     @ManyToMany(fetch = EAGER)
-    private Set<Role> roles;
+    @JoinTable(
+            name = "user_role_junction",
+            joinColumns = {@JoinColumn(name = "username")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Role> authorities;
 
 }

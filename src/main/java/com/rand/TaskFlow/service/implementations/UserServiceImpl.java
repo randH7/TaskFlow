@@ -17,10 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -43,47 +40,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void signUpUser(User user, String userType) {
 
-        Set<Role> userRoles = new HashSet<>();
+        Set<Role> authorities = new HashSet<>();
 
-        if ("TEAMMEMBER".equals(userType.toUpperCase())) {
-            userRoles.add(roleRepo.findByName("TEAMMEMBER"));
-        } else if ("MANAGER".equals(userType.toUpperCase())) {
-            userRoles.add(roleRepo.findByName("MANAGER"));
-        }
-
-        user.setRoles(userRoles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if(userType.toLowerCase().equals("manger")){
-            Manger manger = new Manger();
-            manger.setRoles(user.getRoles());
-            manger.setUsername(user.getUsername());
-            manger.setEmail(user.getEmail());
-            manger.setPassword(user.getPassword());
-            manger.setEmployName(user.getEmployName());
-            manger.setJobTitle(user.getJobTitle());
-            manger.setActive(true);
+            authorities.add(roleRepo.findByAuthority("ROLE_MANAGER").get());
+            Manger manger = new Manger(user.getUsername(), user.getEmail(), user.getPassword(), user.getEmployName(), user.getJobTitle(), true, authorities);
             mangerRepo.save(manger);
-        } else if (userType.toLowerCase().equals("teamMember")) {
-            TeamMember teamMember = new TeamMember();
-            teamMember.setRoles(user.getRoles());
-            teamMember.setUsername(user.getUsername());
-            teamMember.setEmail(user.getEmail());
-            teamMember.setPassword(user.getPassword());
-            teamMember.setEmployName(user.getEmployName());
-            teamMember.setJobTitle(user.getJobTitle());
-            teamMember.setActive(true);
-            teamMember.setLeader(false);
+        } else if (userType.toLowerCase().equals("teammember")) {
+            authorities.add(roleRepo.findByAuthority("ROLE_TEAM_MEMBER").get());
+            TeamMember teamMember = new TeamMember(user.getUsername(), user.getEmail(), user.getPassword(), user.getEmployName(), user.getJobTitle(), true, authorities, false);
             teamMemberRepo.save(teamMember);
         }
+
     }
 
-    public boolean isUsernameTaken(String username) {
-        return userRepo.existsByUsername(username);
-    }
-
-    public boolean isEmailTaken(String email) {
-        return userRepo.existsByEmail(email);
-    }
 
     @Override
     public User getUserByUsernameOrEmail(String usernameOrEmail) {
@@ -110,8 +82,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             // Create a collection of SimpleGrantedAuthority objects from the user's roles
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            user.getRoles().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role.getName()));
+            user.getAuthorities().forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
             });
             // Return the user details, including the username, password, and authorities
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);

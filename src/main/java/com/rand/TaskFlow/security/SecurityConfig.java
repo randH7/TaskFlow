@@ -17,8 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -58,7 +57,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/taskflow/sign-in").permitAll()
                 .requestMatchers("/taskflow/sign-up").permitAll()
-                .requestMatchers(GET, "/taskflow/dashboard").hasAnyAuthority("MANGER", "TEAMMEMBER")
+                .requestMatchers(GET, "/taskflow/dashboard").hasAnyAuthority("ROLE_MANAGER", "ROLE_TEAM_MEMBER")
+                .requestMatchers(POST, "/taskflow/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_TEAM_MEMBER")
+                .requestMatchers(POST, "/taskflow/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
+                .requestMatchers(PATCH, "/taskflow/projects/edit-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
                 .anyRequest().authenticated());
 
 

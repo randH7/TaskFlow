@@ -1,4 +1,8 @@
 package com.rand.TaskFlow.repository;
 
-public interface ProjectAssignmentRepository {
+import com.rand.TaskFlow.entity.ProjectAssignment;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProjectAssignmentRepository extends JpaRepository<ProjectAssignment, Integer> {
+
 }

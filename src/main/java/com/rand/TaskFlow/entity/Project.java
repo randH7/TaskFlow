@@ -1,20 +1,21 @@
 package com.rand.TaskFlow.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "tbl_project")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private Integer projectId;
 
     @NotBlank
@@ -22,31 +23,42 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "manger")
-    @NotBlank
+    @NotNull
     private Manger manger;
 
     @ManyToOne
     @JoinColumn(name = "leader")
-    @NotBlank
+    @NotNull
     private TeamMember leader;
 
     @OneToMany(mappedBy = "project")
-    @NotBlank
     private List<Task> tasks;
 
-    @NotBlank
+    @NotNull
     @FutureOrPresent
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date startDate;
 
-    @NotBlank
+    @NotNull
     @FutureOrPresent
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dueDate;
 
     @NotBlank
     private String description;
 
     @Enumerated
-    @NotBlank
+    @NotNull
     private ProjectStatus projectStatus;
+
+    public Project(String projectName, Manger manger, TeamMember leader, Date startDate, Date dueDate, String description, ProjectStatus projectStatus) {
+        this.projectName = projectName;
+        this.manger = manger;
+        this.leader = leader;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.projectStatus = projectStatus;
+    }
 
 }
