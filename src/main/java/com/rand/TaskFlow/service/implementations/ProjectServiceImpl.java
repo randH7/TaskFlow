@@ -114,6 +114,19 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public String deleteProject(String projectId) {
+
+        Optional<Project> projectFound = projectRepo.findById(Integer.valueOf(projectId));
+
+        if(projectFound.isPresent()){
+            projectRepo.deleteById(Integer.valueOf(projectId));
+            return  "["+projectFound.get().getProjectName()+"] Project Deleted Successfully.";
+
+        }
+        return "Project Not Found.";
+    }
+
+    @Override
     public boolean isMangerForProject(String mangerUsername, String projectId) {
 
         if(projectRepo.findByMangerAndProjectId(mangerRepo.findByUsername(mangerUsername), Integer.valueOf(projectId)).isPresent()){

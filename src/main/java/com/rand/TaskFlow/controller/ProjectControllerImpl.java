@@ -81,5 +81,23 @@ public class ProjectControllerImpl {
 
     }
 
+    @DeleteMapping("/projects/delete-project/{projectId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<String> deleteProject(@PathVariable String projectId){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String mangerUsername = auth.getPrincipal().toString();
+
+        try {
+            if (!projectService.isMangerForProject(mangerUsername, projectId))
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Project Not Deleted Successfully. Not Authorize to Deleted this project.") ;
+            String message = projectService.deleteProject(projectId);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
+        }catch (Exception e){
+            String messageError = "Project Not Deleted Successfully.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError) ;
+        }
+
+    }
 
 }
