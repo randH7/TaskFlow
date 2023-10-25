@@ -113,4 +113,12 @@ public class ProjectServiceImpl implements ProjectService {
             return projectRepo.findByUsernameForTeamMember(username);
     }
 
+    @Override
+    public boolean isMangerForProject(String mangerUsername, String projectId) {
+        if(projectRepo.findByMangerAndProjectId(mangerRepo.findByUsername(mangerUsername), projectRepo.findById(Integer.valueOf(projectId)).get()).isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -1,11 +1,13 @@
 package com.rand.TaskFlow.repository;
 
 import com.rand.TaskFlow.DOT.ListOfProjectsDOT;
+import com.rand.TaskFlow.entity.Manger;
 import com.rand.TaskFlow.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Project findByProjectName(String projectName);
@@ -15,5 +17,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     @Query("SELECT new com.rand.TaskFlow.DOT.ListOfProjectsDOT(p.projectName, p.startDate, p.dueDate, p.manger, p.leader, p.projectStatus) FROM Project p WHERE p.manger.username = ?1")
     List<ListOfProjectsDOT> findByUsernameForManger(String username);
+
+    Optional<Project> findByMangerAndProjectId(Manger manger, Project project);
 
 }

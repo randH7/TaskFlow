@@ -17,4 +17,5 @@ public interface ProjectService {
 
     List<ListOfProjectsDOT> getProjects(String username, String typeRole);
 
+    boolean isMangerForProject(String mangerUsername, String projectId);
 }
