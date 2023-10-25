@@ -46,8 +46,8 @@ public class ProjectControllerImpl {
         String mangerUsername = auth.getPrincipal().toString();
 
         try {
-            projectService.editProject(mangerUsername, projectId, updatesProject);
-            return ResponseEntity.status(HttpStatus.CREATED).body(  "["+updatesProject.get("projectName")+"] Project Updated Successfully.");
+            String message = projectService.editProject(mangerUsername, projectId, updatesProject);
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
         }catch (Exception e){
             String messageError = "Project Not Updated Successfully. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;

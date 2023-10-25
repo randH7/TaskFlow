@@ -13,7 +13,7 @@ public interface ProjectService {
 
     void createProject(String mangerUsername,ProjectDOT newProject);
 
-    void editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException;
+    String editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException;
 
     List<ListOfProjectsDOT> getProjects(String username, String typeRole);
 

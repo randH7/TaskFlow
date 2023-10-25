@@ -48,7 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException {
+    public String editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException {
 
         Optional<Project> projectFound = projectRepo.findById(Integer.valueOf(projectId));
 
@@ -66,7 +66,21 @@ public class ProjectServiceImpl implements ProjectService {
                         existingProject.setProjectName((String) fieldValue);
                         break;
                     case "leaderUsername":
-                        existingProject.setLeader(teamMemberRepo.findByUsername((String) fieldValue));
+                        TeamMember leaderSelected = teamMemberRepo.findByUsername((String) fieldValue);
+                        existingProject.setLeader(leaderSelected);
+                        if (projectAssignmentRepo.findByTeamMemberAndProject(leaderSelected, existingProject).isEmpty()){
+                            ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelected, existingProject);
+                            projectAssignmentRepo.save(projectAssignment);
+                        }
+                        break;
+                    case "teamMembersUsername":
+                        for (String teamMemberUsername: (List<String>)fieldValue) {
+                            TeamMember teamMemberSelected = teamMemberRepo.findByUsername(teamMemberUsername);
+                            if (projectAssignmentRepo.findByTeamMemberAndProject(teamMemberSelected, existingProject).isEmpty()) {
+                                ProjectAssignment projectAssignment = new ProjectAssignment(teamMemberSelected, existingProject);
+                                projectAssignmentRepo.save(projectAssignment);
+                            }
+                        }
                         break;
                     case "description":
                         existingProject.setDescription((String) fieldValue);
@@ -81,7 +95,9 @@ public class ProjectServiceImpl implements ProjectService {
             }
 
             projectRepo.save(existingProject);
+            return  "["+existingProject.getProjectName()+"] Project Updated Successfully.";
         }
+        return "Project Not Found.";
     }
 
     @Override
