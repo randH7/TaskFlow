@@ -9,12 +9,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "tbl_task")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private Integer taskId;
 
     @NotBlank
@@ -22,14 +21,14 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    @NotBlank
+    @NotNull
     private Project project;
 
-    @NotBlank
+    @NotNull
     @FutureOrPresent
     private Date startDate;
 
-    @NotBlank
+    @NotNull
     @FutureOrPresent
     private Date dueDate;
 
@@ -37,11 +36,21 @@ public class Task {
     private String description;
 
     @Enumerated
-    @NotBlank
+    @NotNull
     private TaskStatus taskStatus;
 
     @Enumerated
-    @NotBlank
+    @NotNull
     private PriorityStatus priorityStatus;
+
+    public Task(String taskName, Project project, Date startDate, Date dueDate, String description, TaskStatus taskStatus, PriorityStatus priorityStatus) {
+        this.taskName = taskName;
+        this.project = project;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.taskStatus = taskStatus;
+        this.priorityStatus = priorityStatus;
+    }
 
 }

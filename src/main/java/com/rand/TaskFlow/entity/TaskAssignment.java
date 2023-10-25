@@ -6,12 +6,11 @@ import lombok.*;
 
 @Entity
 @Table(name = "tbl_task_assignment")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class TaskAssignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private Integer taskAssignmentId;
 
     @ManyToOne
@@ -21,5 +20,10 @@ public class TaskAssignment {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
+
+    public TaskAssignment(TeamMember teamMember, Task task) {
+        this.teamMember = teamMember;
+        this.task = task;
+    }
 
 }
