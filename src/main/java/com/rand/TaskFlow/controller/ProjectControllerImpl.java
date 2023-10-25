@@ -46,12 +46,12 @@ public class ProjectControllerImpl {
         String mangerUsername = auth.getPrincipal().toString();
 
         try {
-            if (projectService.isMangerForProject(mangerUsername, projectId))
-                throw new Exception();
+            if (!projectService.isMangerForProject(mangerUsername, projectId))
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Project Not Updated Successfully. Not Authorize to Update this project.") ;
             String message = projectService.editProject(mangerUsername, projectId, updatesProject);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
         }catch (Exception e){
-            String messageError = "Project Not Updated Successfully. Not Authorize to Update this project.";
+            String messageError = "Project Not Updated Successfully.";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError) ;
 
         }

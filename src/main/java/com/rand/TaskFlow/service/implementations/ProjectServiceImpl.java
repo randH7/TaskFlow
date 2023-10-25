@@ -115,10 +115,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean isMangerForProject(String mangerUsername, String projectId) {
-        if(projectRepo.findByMangerAndProjectId(mangerRepo.findByUsername(mangerUsername), projectRepo.findById(Integer.valueOf(projectId)).get()).isEmpty()){
-            return false;
+
+        if(projectRepo.findByMangerAndProjectId(mangerRepo.findByUsername(mangerUsername), Integer.valueOf(projectId)).isPresent()){
+            return true;
         }
-        return true;
+        return false;
     }
 
 }

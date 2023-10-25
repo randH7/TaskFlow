@@ -18,6 +18,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     @Query("SELECT new com.rand.TaskFlow.DOT.ListOfProjectsDOT(p.projectName, p.startDate, p.dueDate, p.manger, p.leader, p.projectStatus) FROM Project p WHERE p.manger.username = ?1")
     List<ListOfProjectsDOT> findByUsernameForManger(String username);
 
-    Optional<Project> findByMangerAndProjectId(Manger manger, Project project);
+    Optional<Project> findByMangerAndProjectId(Manger manger, Integer project);
 
 }
