@@ -43,7 +43,7 @@ public class TaskControllerImpl {
     @PatchMapping("/projects/{projectId}/edit-tasks/{taskId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<String> editTask(@PathVariable Integer projectId, @PathVariable Integer taskId, @RequestBody HashMap<String, Object> updatesTask){
-        System.out.println(1);
+
         try {
              String message = taskService.editTask(projectId, taskId, updatesTask);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
@@ -72,6 +72,23 @@ public class TaskControllerImpl {
             String messageError = "Could not to listing the tasks. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
         }
+    }
+
+    @DeleteMapping("/projects/{projectId}/delete-tasks/{taskId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<String> deleteTask(@PathVariable Integer projectId, @PathVariable Integer taskId){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String mangerUsername = auth.getPrincipal().toString();
+
+        try {
+            String message = taskService.deleteTask(projectId, taskId);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
+        }catch (Exception e){
+            String messageError = "Task Not Deleted Successfully.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError) ;
+        }
+
     }
 
 }

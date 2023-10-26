@@ -15,6 +15,8 @@ public interface TaskService {
 
     List<ListOfTaskDOT> getTasks(String username);
 
+    String deleteTask(Integer projectId, Integer taskId);
+
     boolean isAssignToProject(String teamMember, Integer projectId);
 
 }

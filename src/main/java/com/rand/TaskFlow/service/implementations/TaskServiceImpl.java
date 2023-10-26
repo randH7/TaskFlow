@@ -98,6 +98,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public String deleteTask(Integer projectId, Integer taskId) {
+
+        Optional<Task> taskFound = taskRepo.findByTaskIdAndProject(taskId, projectRepo.findByProjectId(projectId));
+
+        if(taskFound.isPresent()) {
+            taskRepo.deleteById(taskId);
+            return  "["+taskFound.get().getTaskId()+"] Task Deleted Successfully.";
+        }
+
+        return "Project Not Found.";
+
+    }
+
+    @Override
     public boolean isAssignToProject(String teamMember, Integer projectId) {
 
         if(projectAssignmentRepo.findByTeamMemberAndProject(teamMemberRepo.findByUsername(teamMember), projectRepo.findByProjectId(projectId)).isPresent())
