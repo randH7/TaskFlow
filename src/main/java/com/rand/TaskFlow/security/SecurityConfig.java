@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .requestMatchers(DELETE, "/taskflow/projects/delete-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
                 .requestMatchers(POST, "/taskflow/projects/{projectId}/add-task").hasAnyAuthority("ROLE_TEAM_MEMBER")
                 .requestMatchers(GET, "/taskflow/my-tasks").hasAnyAuthority("ROLE_TEAM_MEMBER")
+                .requestMatchers(PATCH, "/taskflow/projects/{projectId}/edit-tasks/{taskId}").hasAnyAuthority("ROLE_TEAM_MEMBER")
                 .anyRequest().authenticated());
 
 

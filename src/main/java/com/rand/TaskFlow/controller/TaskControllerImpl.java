@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,20 @@ public class TaskControllerImpl {
             String messageError = "Task Not Created Successfully. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
 
+        }
+
+    }
+
+    @PatchMapping("/projects/{projectId}/edit-tasks/{taskId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<String> editTask(@PathVariable Integer projectId, @PathVariable Integer taskId, @RequestBody HashMap<String, Object> updatesTask){
+        System.out.println(1);
+        try {
+             String message = taskService.editTask(projectId, taskId, updatesTask);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
+        }catch (Exception e){
+            String messageError = "Project Not Updated Successfully.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
         }
 
     }
