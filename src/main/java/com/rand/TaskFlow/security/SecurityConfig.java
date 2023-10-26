@@ -58,11 +58,12 @@ public class SecurityConfig {
                 .requestMatchers("/taskflow/sign-in").permitAll()
                 .requestMatchers("/taskflow/sign-up").permitAll()
                 .requestMatchers(GET, "/taskflow/dashboard").hasAnyAuthority("ROLE_MANAGER", "ROLE_TEAM_MEMBER")
-                .requestMatchers(POST, "/taskflow/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_TEAM_MEMBER")
+                .requestMatchers(GET, "/taskflow/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_TEAM_MEMBER")
                 .requestMatchers(POST, "/taskflow/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
                 .requestMatchers(PATCH, "/taskflow/projects/edit-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
                 .requestMatchers(DELETE, "/taskflow/projects/delete-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
                 .requestMatchers(POST, "/taskflow/projects/{projectId}/add-task").hasAnyAuthority("ROLE_TEAM_MEMBER")
+                .requestMatchers(GET, "/taskflow/my-tasks").hasAnyAuthority("ROLE_TEAM_MEMBER")
                 .anyRequest().authenticated());
 
 
