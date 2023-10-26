@@ -1,5 +1,6 @@
 package com.rand.TaskFlow.service.implementations;
 
+import com.rand.TaskFlow.DOT.ListOfTaskDOT;
 import com.rand.TaskFlow.DOT.TaskDOT;
 import com.rand.TaskFlow.entity.*;
 import com.rand.TaskFlow.repository.*;
@@ -7,7 +8,7 @@ import com.rand.TaskFlow.service.interfaces.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -36,6 +37,11 @@ public class TaskServiceImpl implements TaskService {
         TaskAssignment taskAssignment = new TaskAssignment(teamMemberRepo.findByUsername(newTask.getTeamMember()), task);
         taskAssignmentRepo.save(taskAssignment);
 
+    }
+
+    @Override
+    public List<ListOfTaskDOT> getTasks(String username) {
+        return taskRepo.findByUsername(username);
     }
 
     @Override

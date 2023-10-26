@@ -53,4 +53,13 @@ public class Task {
         this.priorityStatus = priorityStatus;
     }
 
+    public Task(String taskName, Date startDate, Date dueDate, String description, TaskStatus taskStatus, PriorityStatus priorityStatus) {
+        this.taskName = taskName;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.taskStatus = taskStatus;
+        this.priorityStatus = priorityStatus;
+    }
+
 }

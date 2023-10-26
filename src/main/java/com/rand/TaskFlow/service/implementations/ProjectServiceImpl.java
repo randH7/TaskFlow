@@ -106,7 +106,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ListOfProjectsDOT> getProjects(String username, String typeRole) {
-        System.out.println(typeRole);
+
         if(typeRole.equals("[ROLE_MANAGER]"))
             return projectRepo.findByUsernameForManger(username);
         else

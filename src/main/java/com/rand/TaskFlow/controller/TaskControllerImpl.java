@@ -1,5 +1,7 @@
 package com.rand.TaskFlow.controller;
 
+import com.rand.TaskFlow.DOT.ListOfProjectsDOT;
+import com.rand.TaskFlow.DOT.ListOfTaskDOT;
 import com.rand.TaskFlow.DOT.ProjectDOT;
 import com.rand.TaskFlow.DOT.TaskDOT;
 import com.rand.TaskFlow.service.implementations.TaskServiceImpl;
@@ -11,14 +13,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/taskflow/projects")
+@RequestMapping("/taskflow")
 public class TaskControllerImpl {
 
     @Autowired
     TaskServiceImpl taskService;
 
-    @PostMapping("/{projectId}/add-task")
+    @PostMapping("/projects/{projectId}/add-task")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createProject(@PathVariable Integer projectId, @RequestBody @Valid TaskDOT newTask) {
 
@@ -33,6 +37,26 @@ public class TaskControllerImpl {
 
         }
 
+    }
+
+    @GetMapping("/my-tasks")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> getTasks() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getPrincipal().toString();
+
+        try{
+            List<ListOfTaskDOT> tasks = taskService.getTasks(username);
+            String listTasks = "";
+            for (ListOfTaskDOT task: tasks) {
+                listTasks += task.toString() + "\n";
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("List of All Yours Tasks: \n" + listTasks);
+        }catch (Exception e){
+            String messageError = "Could not to listing the tasks. ";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
+        }
     }
 
 }
