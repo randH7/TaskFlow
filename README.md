@@ -10,7 +10,7 @@ TaskFlow Pro is a practical project that offers hands-on experience in developin
 
 ## 📦 Prerequisites
 - JDK Java 17 
-- Any IDE support Java nad Spring Boot
+- Any IDE support Java and Spring Boot
 - MySQL 8.0
 - MySQL Workbench 8.0
 
@@ -30,27 +30,30 @@ TaskFlow Pro is a practical project that offers hands-on experience in developin
     spring.jpa.show-sql=true
     server.error.include-stacktrace=never
    ```
-4. Import postman file from the project its have all the endpoints
-5. Run the application
+4. Import the Postman collection from [HERE](https://restless-desert-450152.postman.co/workspace/Team-Workspace~520315af-b391-468e-8ef1-10c57a0ce45b/collection/26776231-ee28c9ce-85a9-454f-b7dd-96ab438c65c9?action=share&creator=26776231) its have all the endpoints.
+5. Run the application.
 
 <br> 
 
 ## 💻 Technology used
 - Backend Development: Spring Web with JDK Java 17
 - Data Persistence: Spring Data JPA
-- Manging Database: MySQL Workbench
+- Managing Database: MySQL Workbench
 - Authentication and Authorization: Spring Security
 - Testing the API endpoints: Postman
 
 <br>
 
 ## 🌐 API Endpoints
-![image](https://github.com/randH7/TaskFlow/assets/107724456/4255ef33-256f-4067-adf3-c21ed50a3679)
+This link contains all endpoints in [TaskFlow Collection](https://restless-desert-450152.postman.co/workspace/Team-Workspace~520315af-b391-468e-8ef1-10c57a0ce45b/collection/26776231-ee28c9ce-85a9-454f-b7dd-96ab438c65c9?action=share&creator=26776231).
+<br>
+<br>
+![image](https://github.com/randH7/TaskFlow/assets/107724456/64153bbb-f245-436e-aad8-0ce71d34353f)
 
 <br>
 
 ## 🗃️ Future Work
-- Users can update their profiles, view their task history, and log-out.
+- Users can update their profiles, view their task history, and log out.
 - Users can comment on tasks, share files, and have discussions.
 - Users can view the recent Activity for each project.
 - Frontend framework (Angular) for building the user interface.
