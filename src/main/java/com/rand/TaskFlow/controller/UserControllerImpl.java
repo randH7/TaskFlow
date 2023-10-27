@@ -22,9 +22,15 @@ public class UserControllerImpl {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> processRegistration(@RequestBody @Valid User user, @RequestParam("userType") String userType){
 
+        if(userService.isUsernameTaken(user.getUsername()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
+
+        if (userService.isEmailTaken(user.getEmail()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
+
         try{
             userService.signUpUser(user, userType);
-            return ResponseEntity.status(HttpStatus.OK).body("Sign-up successful. Now Sign-in");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Sign-up successful. Now Sign-in");
         }catch (Exception e){
             String messageError = "user Not registered Successfully. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
@@ -35,21 +41,6 @@ public class UserControllerImpl {
     @GetMapping("/sign-in")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> processSignIn(@RequestParam("usernameOrEmail") @Valid String usernameOrEmail, @RequestParam("password") @Valid String password){
-        if (usernameOrEmail == null || password == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request");
-
-
-        User userFound = userService.getUserByUsernameOrEmail(usernameOrEmail);
-        if(userFound == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-
-
-        password = passwordEncoder.encode(password);
-
-        if (!userService.isPasswordValid(userFound, password))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
-
-
 
         return ResponseEntity.status(HttpStatus.OK).body("Sign-in successful");
 

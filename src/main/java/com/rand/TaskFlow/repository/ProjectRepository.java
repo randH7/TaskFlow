@@ -21,4 +21,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Optional<Project> findByMangerAndProjectId(Manger manger, Integer project);
 
     Project findByProjectId(Integer projectId);
+
+    // for test purpose
+    Project findTopByOrderByProjectIdDesc();
 }

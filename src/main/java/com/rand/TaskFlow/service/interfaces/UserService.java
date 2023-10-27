@@ -8,7 +8,8 @@ public interface UserService {
 
     void signUpUser(User user, String userType);
 
-    User getUserByUsernameOrEmail(String usernameOrEmail);
+    boolean isUsernameTaken(String username);
 
-    boolean isPasswordValid(User userFound, String password);
+    boolean isEmailTaken(String email);
+
 }

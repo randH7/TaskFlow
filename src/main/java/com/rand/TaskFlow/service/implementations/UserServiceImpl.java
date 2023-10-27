@@ -56,20 +56,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
-
     @Override
-    public User getUserByUsernameOrEmail(String usernameOrEmail) {
-        return userRepo.findByUsernameOrEmail(usernameOrEmail);
+    public boolean isUsernameTaken(String username) {
+        return userRepo.existsByUsername(username);
     }
 
     @Override
-    public boolean isPasswordValid(User userFound, String password) {
-
-        if(userFound.getPassword().equals(password)){
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isEmailTaken(String email) {
+        return userRepo.existsByEmail(email);
     }
 
     @Override

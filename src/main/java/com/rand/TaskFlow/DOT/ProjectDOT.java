@@ -23,12 +23,12 @@ public class ProjectDOT {
 
     @NotNull
     @FutureOrPresent
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @NotNull
     @FutureOrPresent
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
 
     @NotBlank

@@ -18,4 +18,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     Task findByTaskId(Integer taskId);
 
+    // for test purpose
+    Task findTopByOrderByTaskIdDesc();
 }
