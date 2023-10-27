@@ -68,7 +68,6 @@ public class SecurityConfig {
                 .requestMatchers(DELETE, "/taskflow/projects/{projectId}/delete-tasks/{taskId}").hasAnyAuthority("ROLE_TEAM_MEMBER")
                 .anyRequest().authenticated());
 
-        http.formLogin(formLogin -> formLogin.loginPage("/taskflow/sign-in").permitAll());
 
 
         // add the custom authentication filter to the http security object
