@@ -45,10 +45,31 @@ TaskFlow Pro is a practical project that offers hands-on experience in developin
 <br>
 
 ## 🌐 API Endpoints
-This link contains all endpoints in [TaskFlow Collection](https://restless-desert-450152.postman.co/workspace/Team-Workspace~520315af-b391-468e-8ef1-10c57a0ce45b/collection/26776231-ee28c9ce-85a9-454f-b7dd-96ab438c65c9?action=share&creator=26776231).
-<br>
-<br>
-![image](https://github.com/randH7/TaskFlow/assets/107724456/64153bbb-f245-436e-aad8-0ce71d34353f)
+
+### User Authentication and Management:
+- `POST` `http://localhost:8082/taskflow/sign-up?userType={userType}` : Register a new user (both manager and team member). The request body should include the user's registration details in JSON format and `{userType}` could be manger or teamMember only.
+
+- `GET` `http://localhost:8082/taskflow/signin?usernameOrEmail={usernameOrEmail}&password={password}` : Login an existing user (both manager and team member). The query params should include the user's username or email and the user's password.
+
+  
+### Project Management:
+- `POST` `http://localhost:8082/taskflow/projects/create-project` : Create a new project (for any manager). The request body should include the project details in JSON format.
+  
+- `PATCH` `http://localhost:8082/taskflow/projects/edit-project/{projectId}` : Update a project (only for the manager who created the project). The request body should include the updated project details in JSON format and `{projectId}` for the specific project.
+  
+- `DELETE` `http://localhost:8082/taskflow/projects/delete-project/{projectId}` : Delete a project (only for the manager who created the project). Replace `{projectId}` for the specific project.
+  
+- `GET` `http://localhost:8082/taskflow/projects` : This endpoint should return a list of projects created by the manager or that the team member is assigned to.
+
+
+### Task Management:
+- `POST` `http://localhost:8082/taskflow/projects/{projectId}/add-task` : Add a new task to a specific project (for any team member who works on the project). The request body should include the task details in JSON format and `{projectId}` for the specific project.
+  
+- `PATCH` `http://localhost:8082/taskflow/projects/{projectId}/edit-tasks/{taskId}` : Update a task (for any team member). The request body should include the updated task details in JSON format. The path variables should replace `{taskId}` with the specific task ID and `{projectId}` with the specific project that has this task. 
+
+- `DELETE` `http://localhost:8082/taskflow/projects/{projectId}/delete-tasks/{taskId}` : Delete a task (for any team member). The path variables should replace `{taskId}` with the specific task ID and `{projectId}` with the specific project that has this task.
+  
+- `GET` `http://localhost:8082/taskflow/my-tasks` : Retrieve a list of the tasks that the team member who works on in all projects.
 
 <br>
 
@@ -73,4 +94,5 @@ Spring Security:
 - [Spring Security 6 | How to Create a Login System with Spring Data JPA and JWTs - NEW 2023](]https://youtu.be/TeBt0Ike_Tk?si=nEiw7xYIbIqYcijW)
 - [Spring Security Tutorial - NEW 2023](https://youtu.be/b9O9NI-RJ3o?si=EynGsrSMx6fFay0e)
 - [Spring Security – Configuring Different URLs](https://www.baeldung.com/spring-security-configuring-urls)
-- [Stack OverFlow - resolve method 'antMatchers()'](https://stackoverflow.com/questions/74753700/cannot-resolve-method-antmatchers-in-authorizationmanagerrequestmatcherregis)
+- [Stack Overflow - resolve method 'antMatchers()'](https://stackoverflow.com/questions/74753700/cannot-resolve-method-antmatchers-in-authorizationmanagerrequestmatcherregis)
+- [Stack Overflow - unidirectional many-to-one and cascading delete](https://stackoverflow.com/questions/7197181/jpa-unidirectional-many-to-one-and-cascading-delete)
