@@ -8,7 +8,7 @@ import lombok.*;
 
 import java.util.Date;
 
-@Getter @Setter @RequiredArgsConstructor
+@Getter @Setter
 public class ListOfProjectsDTO {
 
     private String projectName;
@@ -25,22 +25,13 @@ public class ListOfProjectsDTO {
 
     private ProjectStatus projectStatus;
 
-//    public ListOfProjectsDTO(String projectName, Date startDate, Date dueDate, Manager manager, Employ leader, ProjectStatus projectStatus) {
-//        this.projectName = projectName;
-//        this.startDate = startDate;
-//        this.dueDate = dueDate;
-//        this.manager = manager;
-//        this.leader = leader;
-//        this.projectStatus = projectStatus;
-//    }
-
-    @Override
-    public String toString() {
-        return "\nProject Name: " + projectName +
-                "\nStart Date: " + startDate +
-                "\nDue Date: " + dueDate +
-                "\nManager: " + manager.getUsername() +
-                "\nLeader: " + leader.getUsername() +
-                "\nProject Status: " + projectStatus + "\n";
+    public ListOfProjectsDTO(String projectName, Date startDate, Date dueDate, Manager manager, Employ leader, ProjectStatus projectStatus) {
+        this.projectName = projectName;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.manager = manager;
+        this.leader = leader;
+        this.projectStatus = projectStatus;
     }
+
 }

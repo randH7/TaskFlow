@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.Date;
 import java.util.List;
 
-@Getter @Setter @RequiredArgsConstructor
+@Getter @Setter
 public class ProjectDTO {
 
     private String projectName;
@@ -26,6 +26,16 @@ public class ProjectDTO {
 
     private List<String> teamMembersUsername;
 
+    public ProjectDTO(String projectName, String leaderUsername, Date startDate, Date dueDate, String description, ProjectStatus projectStatus, List<String> teamMembersUsername) {
+        this.projectName = projectName;
+        this.leaderUsername = leaderUsername;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.projectStatus = projectStatus;
+        this.teamMembersUsername = teamMembersUsername;
+    }
+
     @Override
     public String toString() {
         return "ProjectDTO{" +
@@ -38,4 +48,5 @@ public class ProjectDTO {
                 ", teamMembersUsername=" + teamMembersUsername +
                 '}';
     }
+
 }

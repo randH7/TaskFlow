@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(PATCH, "/api/manager/invite-employ").hasAnyAuthority("ROLE_MANAGER")
                         .requestMatchers(PATCH, "/api/manager/remove-employ").hasAnyAuthority("ROLE_MANAGER")
+                        .requestMatchers(PATCH, "/api/manager/get-employees").hasAnyAuthority("ROLE_MANAGER")
 
                         .requestMatchers(GET, "/api/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
                         .requestMatchers(POST, "/api/projects/create-project").hasAnyAuthority("ROLE_MANAGER")

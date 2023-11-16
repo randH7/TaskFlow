@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.util.Date;
 
-@Getter @Setter @RequiredArgsConstructor
+@Getter @Setter
 public class TaskDTO {
 
     private String taskName;
@@ -22,5 +22,15 @@ public class TaskDTO {
     private PriorityStatus priorityStatus;
 
     private String teamMember;
+
+    public TaskDTO(String taskName, Date startDate, Date dueDate, String description, TaskStatus taskStatus, PriorityStatus priorityStatus, String teamMember) {
+        this.taskName = taskName;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.taskStatus = taskStatus;
+        this.priorityStatus = priorityStatus;
+        this.teamMember = teamMember;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.rand.TaskFlow.service.implementations;
 
+import com.rand.TaskFlow.DTO.ListOfEmployDTO;
 import com.rand.TaskFlow.entity.Employ;
 import com.rand.TaskFlow.repository.EmployRepository;
 import com.rand.TaskFlow.repository.ManagerRepository;
@@ -7,7 +8,8 @@ import com.rand.TaskFlow.service.interfaces.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -36,6 +38,11 @@ public class ManagerServiceImpl implements ManagerService {
         employRepo.save(employFound);
 
         return "Employ removed Successfully";
+    }
+
+    @Override
+    public List<ListOfEmployDTO> getEmployees(String mangerUsername) {
+        return employRepo.findByManager(mangerUsername);
     }
 
 }
