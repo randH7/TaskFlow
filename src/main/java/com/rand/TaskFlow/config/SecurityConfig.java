@@ -32,15 +32,18 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers(GET, "/api/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
-                .requestMatchers(POST, "/api/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
-                .requestMatchers(PATCH, "/api/projects/edit-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
-                .requestMatchers(DELETE, "/api/projects/delete-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
-                .requestMatchers(POST, "/api/projects/{projectId}/add-task").hasAnyAuthority("ROLE_EMPLOY")
-                .requestMatchers(GET, "/api/my-tasks").hasAnyAuthority("ROLE_EMPLOY")
-                .requestMatchers(PATCH, "/api/projects/{projectId}/edit-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
-                .requestMatchers(DELETE, "/api/projects/{projectId}/delete-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
-                .anyRequest().authenticated())
+                        .requestMatchers(PATCH, "/api/manager/invite-employ").hasAnyAuthority("ROLE_MANAGER")
+                        .requestMatchers(PATCH, "/api/manager/remove-employ").hasAnyAuthority("ROLE_MANAGER")
+
+                        .requestMatchers(GET, "/api/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
+                        .requestMatchers(POST, "/api/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
+                        .requestMatchers(PATCH, "/api/projects/edit-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
+                        .requestMatchers(DELETE, "/api/projects/delete-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
+                        .requestMatchers(POST, "/api/projects/{projectId}/add-task").hasAnyAuthority("ROLE_EMPLOY")
+                        .requestMatchers(GET, "/api/my-tasks").hasAnyAuthority("ROLE_EMPLOY")
+                        .requestMatchers(PATCH, "/api/projects/{projectId}/edit-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
+                        .requestMatchers(DELETE, "/api/projects/{projectId}/delete-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
+                        .anyRequest().authenticated())
 
                 // Add the custom authentication filter to the http security object
                 .authenticationProvider(authenticationProvider)

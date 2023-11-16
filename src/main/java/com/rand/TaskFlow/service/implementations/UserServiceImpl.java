@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.getUsername(), userLoginDTO.getPassword()));
         User user = userRepo.findById(userLoginDTO.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationDTO.builder().token(jwtToken).build();
+        return AuthenticationDTO.builder().access_token(jwtToken).build();
     }
 
 }

@@ -20,6 +20,9 @@ import java.util.Set;
 public class Manager extends User {
 
     @OneToMany(mappedBy = "manager")
+    private List<Employ> employs;
+
+    @OneToMany(mappedBy = "manager")
     private List<Project> projects;
 
     public Manager(@NotBlank String username, @NotBlank @Email String email, @NotBlank String password, @NotBlank String employName, @NotBlank String jobTitle, @NotBlank Role role) {

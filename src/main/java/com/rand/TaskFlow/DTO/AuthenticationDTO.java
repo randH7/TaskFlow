@@ -5,6 +5,6 @@ import lombok.*;
 @Builder @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class AuthenticationDTO {
 
-    private String token;
+    private String access_token;
 
 }
