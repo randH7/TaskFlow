@@ -1,9 +1,9 @@
 package com.rand.TaskFlow.entity;
 
+import com.rand.TaskFlow.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +12,9 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "tbl_team_member")
+@Table(name = "tbl_employ")
 @Getter @Setter @NoArgsConstructor
-public class TeamMember extends User {
-
-
-    private boolean isLeader;
+public class Employ extends User {
 
     @ManyToMany
     @JoinTable(
@@ -35,9 +32,8 @@ public class TeamMember extends User {
     )
     private List<TaskAssignment> taskAssignments;
 
-    public TeamMember(@NotBlank String username, @NotBlank @Email String email, @NotBlank String password, @NotBlank String employName, @NotBlank String jobTitle, boolean active, Set<Role> authorities, boolean isLeader) {
-        super(username, email, password, employName, jobTitle, active, authorities);
-        this.isLeader = isLeader;
+    public Employ(@NotBlank String username, @NotBlank @Email String email, @NotBlank String password, @NotBlank String employName, @NotBlank String jobTitle, Role role) {
+        super(username, email, password, employName, jobTitle, role);
     }
 
 }

@@ -1,12 +1,13 @@
 package com.rand.TaskFlow.service.implementations;
 
-import com.rand.TaskFlow.DOT.ListOfProjectsDOT;
-import com.rand.TaskFlow.DOT.ProjectDOT;
+import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
+import com.rand.TaskFlow.DTO.ProjectDTO;
 import com.rand.TaskFlow.entity.*;
-import com.rand.TaskFlow.repository.MangerRepository;
+import com.rand.TaskFlow.entity.enums.ProjectStatus;
+import com.rand.TaskFlow.repository.ManagerRepository;
 import com.rand.TaskFlow.repository.ProjectAssignmentRepository;
 import com.rand.TaskFlow.repository.ProjectRepository;
-import com.rand.TaskFlow.repository.TeamMemberRepository;
+import com.rand.TaskFlow.repository.EmployRepository;
 import com.rand.TaskFlow.service.interfaces.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,31 +23,29 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepo;
 
     @Autowired
-    private MangerRepository mangerRepo;
+    private ManagerRepository managerRepo;
 
     @Autowired
-    private TeamMemberRepository teamMemberRepo;
+    private EmployRepository employRepo;
 
     @Autowired
     private ProjectAssignmentRepository projectAssignmentRepo;
 
     @Override
-    public void createProject(String mangerUsername, ProjectDOT newProject) {
+    public void createProject(String managerUsername, ProjectDTO newProject) {
 
-        Manger mangerSelect = mangerRepo.findByUsername(mangerUsername);
-        TeamMember leaderSelect = teamMemberRepo.findByUsername(newProject.getLeaderUsername());
-        Project project = new Project(newProject.getProjectName(), mangerSelect, leaderSelect, newProject.getStartDate(), newProject.getDueDate(), newProject.getDescription(), ProjectStatus.IN_PROGRESS);
+        Manager managerSelected = managerRepo.findByUsername(managerUsername);
+        Employ leaderSelected = employRepo.findByUsername(newProject.getLeaderUsername());
+        Project project = new Project(newProject.getProjectName(), managerSelected, leaderSelected, newProject.getStartDate(), newProject.getDueDate(), newProject.getDescription(), ProjectStatus.IN_PROGRESS);
 
         projectRepo.save(project);
-        ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelect, projectRepo.findByProjectName(newProject.getProjectName()));
+        ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelected, projectRepo.findByProjectName(newProject.getProjectName()));
         projectAssignmentRepo.save(projectAssignment);
 
-        for (String teamMemberUsername: newProject.getTeamMembersUsername()) {
-            TeamMember teamMemberSelected = teamMemberRepo.findByUsername(teamMemberUsername);
-            if (projectAssignmentRepo.findByTeamMemberAndProject(teamMemberSelected, projectRepo.findByProjectName(newProject.getProjectName())).isEmpty()){
-                projectAssignment = new ProjectAssignment(teamMemberSelected, projectRepo.findByProjectName(newProject.getProjectName()));
-                projectAssignmentRepo.save(projectAssignment);
-            }
+        for (String employUsername: newProject.getTeamMembersUsername()) {
+            Employ employSelected = employRepo.findByUsername(employUsername);
+            projectAssignment = new ProjectAssignment(employSelected, projectRepo.findByProjectName(newProject.getProjectName()));
+            projectAssignmentRepo.save(projectAssignment);
         }
 
     }
@@ -70,18 +69,18 @@ public class ProjectServiceImpl implements ProjectService {
                         existingProject.setProjectName((String) fieldValue);
                         break;
                     case "leaderUsername":
-                        TeamMember leaderSelected = teamMemberRepo.findByUsername((String) fieldValue);
+                        Employ leaderSelected = employRepo.findByUsername((String) fieldValue);
                         existingProject.setLeader(leaderSelected);
-                        if (projectAssignmentRepo.findByTeamMemberAndProject(leaderSelected, existingProject).isEmpty()){
+                        if (projectAssignmentRepo.findByEmployAndProject(leaderSelected, existingProject).isEmpty()){
                             ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelected, existingProject);
                             projectAssignmentRepo.save(projectAssignment);
                         }
                         break;
                     case "teamMembersUsername":
                         for (String teamMemberUsername: (List<String>)fieldValue) {
-                            TeamMember teamMemberSelected = teamMemberRepo.findByUsername(teamMemberUsername);
-                            if (projectAssignmentRepo.findByTeamMemberAndProject(teamMemberSelected, existingProject).isEmpty()) {
-                                ProjectAssignment projectAssignment = new ProjectAssignment(teamMemberSelected, existingProject);
+                            Employ employSelected = employRepo.findByUsername(teamMemberUsername);
+                            if (projectAssignmentRepo.findByEmployAndProject(employSelected, existingProject).isEmpty()) {
+                                ProjectAssignment projectAssignment = new ProjectAssignment(employSelected, existingProject);
                                 projectAssignmentRepo.save(projectAssignment);
                             }
                         }
@@ -105,12 +104,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ListOfProjectsDOT> getProjects(String username, String typeRole) {
+    public List<ListOfProjectsDTO> getProjects(String username, String typeRole) {
 
         if(typeRole.equals("[ROLE_MANAGER]"))
-            return projectRepo.findByUsernameForManger(username);
+            return projectRepo.findByUsernameForManager(username);
         else
-            return projectRepo.findByUsernameForTeamMember(username);
+            return projectRepo.findByUsernameForEmploy(username);
     }
 
     @Override
@@ -129,7 +128,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public boolean isMangerForProject(String mangerUsername, String projectId) {
 
-        if(projectRepo.findByMangerAndProjectId(mangerRepo.findByUsername(mangerUsername), Integer.valueOf(projectId)).isPresent()){
+        if(projectRepo.findByManagerAndProjectId(managerRepo.findByUsername(mangerUsername), Integer.valueOf(projectId)).isPresent()){
             return true;
         }
         return false;

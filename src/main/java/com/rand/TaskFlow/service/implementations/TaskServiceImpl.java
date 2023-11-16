@@ -1,8 +1,10 @@
 package com.rand.TaskFlow.service.implementations;
 
-import com.rand.TaskFlow.DOT.ListOfTaskDOT;
-import com.rand.TaskFlow.DOT.TaskDOT;
+import com.rand.TaskFlow.DTO.ListOfTaskDTO;
+import com.rand.TaskFlow.DTO.TaskDTO;
 import com.rand.TaskFlow.entity.*;
+import com.rand.TaskFlow.entity.enums.PriorityStatus;
+import com.rand.TaskFlow.entity.enums.TaskStatus;
 import com.rand.TaskFlow.repository.*;
 import com.rand.TaskFlow.service.interfaces.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,10 @@ public class TaskServiceImpl implements TaskService {
     TaskAssignmentRepository taskAssignmentRepo;
 
     @Autowired
-    TeamMemberRepository teamMemberRepo;
+    EmployRepository teamMemberRepo;
 
     @Override
-    public void createTask(Integer projectId, TaskDOT newTask) {
+    public void createTask(Integer projectId, TaskDTO newTask) {
 
         Task task = new Task(newTask.getTaskName(), projectRepo.findByProjectId(projectId), newTask.getStartDate(), newTask.getDueDate(), newTask.getDescription(), newTask.getTaskStatus(), newTask.getPriorityStatus());
         taskRepo.save(task);
@@ -93,7 +95,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<ListOfTaskDOT> getTasks(String username) {
+    public List<ListOfTaskDTO> getTasks(String username) {
         return taskRepo.findByUsername(username);
     }
 
@@ -114,7 +116,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public boolean isAssignToProject(String teamMember, Integer projectId) {
 
-        if(projectAssignmentRepo.findByTeamMemberAndProject(teamMemberRepo.findByUsername(teamMember), projectRepo.findByProjectId(projectId)).isPresent())
+        if(projectAssignmentRepo.findByEmployAndProject(teamMemberRepo.findByUsername(teamMember), projectRepo.findByProjectId(projectId)).isPresent())
             return true;
         return false;
 

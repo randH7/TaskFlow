@@ -1,12 +1,11 @@
-package com.rand.TaskFlow.DOT;
+package com.rand.TaskFlow.DTO;
 
-import com.rand.TaskFlow.entity.PriorityStatus;
-import com.rand.TaskFlow.entity.TaskStatus;
-import com.rand.TaskFlow.entity.TeamMember;
+import com.rand.TaskFlow.entity.Employ;
+import com.rand.TaskFlow.entity.enums.PriorityStatus;
+import com.rand.TaskFlow.entity.enums.TaskStatus;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter @NoArgsConstructor
-public class ListOfTaskDOT {
+public class ListOfTaskDTO {
 
     @NotBlank
     private String taskName;
@@ -37,15 +36,15 @@ public class ListOfTaskDOT {
     private PriorityStatus priorityStatus;
 
     @NotBlank
-    private TeamMember teamMember;
-    public ListOfTaskDOT(String taskName, Date startDate, Date dueDate, String description, TaskStatus taskStatus, PriorityStatus priorityStatus, TeamMember teamMember) {
+    private Employ employ;
+    public ListOfTaskDTO(String taskName, Date startDate, Date dueDate, String description, TaskStatus taskStatus, PriorityStatus priorityStatus, Employ employ) {
         this.taskName = taskName;
         this.startDate = startDate;
         this.dueDate = dueDate;
         this.description = description;
         this.taskStatus = taskStatus;
         this.priorityStatus = priorityStatus;
-        this.teamMember = teamMember;
+        this.employ = employ;
     }
 
     @Override
@@ -56,6 +55,6 @@ public class ListOfTaskDOT {
                 "\nDescription: " + description +
                 "\nTask Status: " + taskStatus +
                 "\nPriority Status: " + priorityStatus +
-                "\nTeamMember: " + teamMember.getUsername() + "\n";
+                "\nEmploy: " + employ.getUsername() + "\n";
     }
 }

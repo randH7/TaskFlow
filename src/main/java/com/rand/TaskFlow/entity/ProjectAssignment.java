@@ -16,14 +16,14 @@ public class ProjectAssignment {
 
     @ManyToOne
     @JoinColumn(name = "username")
-    private TeamMember teamMember;
+    private Employ employ;
 
     @ManyToOne
     @JoinColumn(name = "project_id", foreignKey = @ForeignKey(value = CONSTRAINT, foreignKeyDefinition = "FOREIGN KEY (project_id) REFERENCES tbl_project(project_id) ON DELETE CASCADE"))
     private Project project;
 
-    public ProjectAssignment(TeamMember teamMember, Project project) {
-        this.teamMember = teamMember;
+    public ProjectAssignment(Employ employ, Project project) {
+        this.employ = employ;
         this.project = project;
     }
 

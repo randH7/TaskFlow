@@ -1,7 +1,7 @@
-package com.rand.TaskFlow.DOT;
+package com.rand.TaskFlow.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.rand.TaskFlow.entity.ProjectStatus;
+import com.rand.TaskFlow.entity.enums.ProjectStatus;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter @Setter @AllArgsConstructor
-public class ProjectDOT {
+public class ProjectDTO {
 
     @NotBlank
     private String projectName;
@@ -42,7 +42,7 @@ public class ProjectDOT {
 
     @Override
     public String toString() {
-        return "ProjectDOT{" +
+        return "ProjectDTO{" +
                 "projectName='" + projectName + '\'' +
                 ", leaderUsername='" + leaderUsername + '\'' +
                 ", startDate=" + startDate +

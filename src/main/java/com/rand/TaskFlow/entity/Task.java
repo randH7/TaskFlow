@@ -1,11 +1,12 @@
 package com.rand.TaskFlow.entity;
 
+import com.rand.TaskFlow.entity.enums.PriorityStatus;
+import com.rand.TaskFlow.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "tbl_task")
@@ -35,11 +36,11 @@ public class Task {
     @NotBlank
     private String description;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private TaskStatus taskStatus;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private PriorityStatus priorityStatus;
 

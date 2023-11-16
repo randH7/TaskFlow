@@ -1,5 +1,6 @@
 package com.rand.TaskFlow.entity;
 
+import com.rand.TaskFlow.entity.enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -16,13 +17,13 @@ import java.util.Set;
 @Entity
 @Table(name = "tbl_manger")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class Manger extends User {
+public class Manager extends User {
 
-    @OneToMany(mappedBy = "manger")
+    @OneToMany(mappedBy = "manager")
     private List<Project> projects;
 
-    public Manger(@NotBlank String username, @NotBlank @Email String email, @NotBlank String password, @NotBlank String employName, @NotBlank String jobTitle, boolean active, Set<Role> authorities) {
-        super(username, email, password, employName, jobTitle, active, authorities);
+    public Manager(@NotBlank String username, @NotBlank @Email String email, @NotBlank String password, @NotBlank String employName, @NotBlank String jobTitle, @NotBlank Role role) {
+        super(username, email, password, employName, jobTitle, role);
     }
 
 }

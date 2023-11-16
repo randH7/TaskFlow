@@ -1,21 +1,19 @@
 package com.rand.TaskFlow.service.interfaces;
 
-import com.rand.TaskFlow.DOT.ListOfProjectsDOT;
-import com.rand.TaskFlow.DOT.ProjectDOT;
+import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
+import com.rand.TaskFlow.DTO.ProjectDTO;
 
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public interface ProjectService {
 
-    void createProject(String mangerUsername,ProjectDOT newProject);
+    void createProject(String mangerUsername, ProjectDTO newProject);
 
     String editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException;
 
-    List<ListOfProjectsDOT> getProjects(String username, String typeRole);
+    List<ListOfProjectsDTO> getProjects(String username, String typeRole);
 
     boolean isMangerForProject(String mangerUsername, String projectId);
 

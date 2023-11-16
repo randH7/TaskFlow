@@ -1,9 +1,7 @@
 package com.rand.TaskFlow.controller;
 
-import com.rand.TaskFlow.DOT.ListOfProjectsDOT;
-import com.rand.TaskFlow.DOT.ListOfTaskDOT;
-import com.rand.TaskFlow.DOT.ProjectDOT;
-import com.rand.TaskFlow.DOT.TaskDOT;
+import com.rand.TaskFlow.DTO.ListOfTaskDTO;
+import com.rand.TaskFlow.DTO.TaskDTO;
 import com.rand.TaskFlow.service.implementations.TaskServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,7 @@ public class TaskControllerImpl {
 
     @PostMapping("/projects/{projectId}/add-task")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createProject(@PathVariable Integer projectId, @RequestBody @Valid TaskDOT newTask) {
+    public ResponseEntity<String> createProject(@PathVariable Integer projectId, @RequestBody @Valid TaskDTO newTask) {
 
         try {
             if (!taskService.isAssignToProject(newTask.getTeamMember(), projectId))
@@ -62,9 +60,9 @@ public class TaskControllerImpl {
         String username = auth.getPrincipal().toString();
 
         try{
-            List<ListOfTaskDOT> tasks = taskService.getTasks(username);
+            List<ListOfTaskDTO> tasks = taskService.getTasks(username);
             String listTasks = "";
-            for (ListOfTaskDOT task: tasks) {
+            for (ListOfTaskDTO task: tasks) {
                 listTasks += task.toString() + "\n";
             }
             return ResponseEntity.status(HttpStatus.OK).body("List of All Yours Tasks: \n" + listTasks);

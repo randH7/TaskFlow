@@ -1,26 +1,24 @@
 package com.rand.TaskFlow.controller;
 
-import com.rand.TaskFlow.entity.*;
+import com.rand.TaskFlow.DTO.AuthenticationDTO;
+import com.rand.TaskFlow.DTO.UserLoginDTO;
+import com.rand.TaskFlow.entity.User;
 import com.rand.TaskFlow.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/taskflow")
-public class UserControllerImpl {
+@RequestMapping("/auth")
+public class AuthControllerImpl {
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> processRegistration(@RequestBody @Valid User user, @RequestParam("userType") String userType){
+    public ResponseEntity<String> register(@RequestBody @Valid User user, @RequestParam("userType") String userType) {
 
         if(userService.isUsernameTaken(user.getUsername()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
@@ -38,18 +36,10 @@ public class UserControllerImpl {
 
     }
 
-    @GetMapping("/sign-in")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> processSignIn(@RequestParam("usernameOrEmail") @Valid String usernameOrEmail, @RequestParam("password") @Valid String password){
-
-        return ResponseEntity.status(HttpStatus.OK).body("Sign-in successful");
-
-    }
-
-    @GetMapping("/dashboard")
-    @ResponseStatus(HttpStatus.OK)
-    public String showDashboardPage(){
-        return "Dashboard Page";
+    public ResponseEntity<AuthenticationDTO> login (@RequestBody @Valid UserLoginDTO userLoginDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.loginUser(userLoginDTO));
     }
 
 }

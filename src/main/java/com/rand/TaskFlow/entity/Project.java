@@ -1,11 +1,11 @@
 package com.rand.TaskFlow.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.rand.TaskFlow.entity.enums.ProjectStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,14 +22,14 @@ public class Project {
     private String projectName;
 
     @ManyToOne
-    @JoinColumn(name = "manger")
+    @JoinColumn(name = "manager")
     @NotNull
-    private Manger manger;
+    private Manager manager;
 
     @ManyToOne
     @JoinColumn(name = "leader")
     @NotNull
-    private TeamMember leader;
+    private Employ leader;
 
     @OneToMany(mappedBy = "project")
     private List<Task> tasks;
@@ -47,13 +47,13 @@ public class Project {
     @NotBlank
     private String description;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private ProjectStatus projectStatus;
 
-    public Project(String projectName, Manger manger, TeamMember leader, Date startDate, Date dueDate, String description, ProjectStatus projectStatus) {
+    public Project(String projectName, Manager manager, Employ leader, Date startDate, Date dueDate, String description, ProjectStatus projectStatus) {
         this.projectName = projectName;
-        this.manger = manger;
+        this.manager = manager;
         this.leader = leader;
         this.startDate = startDate;
         this.dueDate = dueDate;

@@ -1,57 +1,56 @@
 package com.rand.TaskFlow.service.implementations;
 
-import com.rand.TaskFlow.entity.Manger;
-import com.rand.TaskFlow.entity.Role;
-import com.rand.TaskFlow.entity.TeamMember;
+import com.rand.TaskFlow.DTO.AuthenticationDTO;
+import com.rand.TaskFlow.DTO.UserLoginDTO;
+import com.rand.TaskFlow.entity.Manager;
+import com.rand.TaskFlow.entity.enums.Role;
+import com.rand.TaskFlow.entity.Employ;
 import com.rand.TaskFlow.entity.User;
-import com.rand.TaskFlow.repository.MangerRepository;
-import com.rand.TaskFlow.repository.RoleRepository;
-import com.rand.TaskFlow.repository.TeamMemberRepository;
+import com.rand.TaskFlow.filters.JwtService;
+import com.rand.TaskFlow.repository.ManagerRepository;
+import com.rand.TaskFlow.repository.EmployRepository;
 import com.rand.TaskFlow.repository.UserRepository;
 import com.rand.TaskFlow.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepo;
 
     @Autowired
-    private MangerRepository mangerRepo;
+    private ManagerRepository managerRepo;
 
     @Autowired
-    private TeamMemberRepository teamMemberRepo;
-
-    @Autowired
-    private RoleRepository roleRepo;
+    private EmployRepository employRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
     @Override
     public void signUpUser(User user, String userType) {
 
-        Set<Role> authorities = new HashSet<>();
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if(userType.toLowerCase().equals("manger")){
-            authorities.add(roleRepo.findByAuthority("ROLE_MANAGER").get());
-            Manger manger = new Manger(user.getUsername(), user.getEmail(), user.getPassword(), user.getEmployName(), user.getJobTitle(), true, authorities);
-            mangerRepo.save(manger);
-        } else if (userType.toLowerCase().equals("teammember")) {
-            authorities.add(roleRepo.findByAuthority("ROLE_TEAM_MEMBER").get());
-            TeamMember teamMember = new TeamMember(user.getUsername(), user.getEmail(), user.getPassword(), user.getEmployName(), user.getJobTitle(), true, authorities, false);
-            teamMemberRepo.save(teamMember);
+        if(userType.toLowerCase().equals("manager")){
+            Manager manager = new Manager(user.getUsername(), user.getEmail(), user.getPassword(), user.getEmployName(), user.getJobTitle(), Role.ROLE_MANAGER);
+            managerRepo.save(manager);
+        } else if (userType.toLowerCase().equals("employ")) {
+            Employ employ = new Employ(user.getUsername(), user.getEmail(), user.getPassword(), user.getEmployName(), user.getJobTitle(), Role.ROLE_EMPLOY);
+            employRepo.save(employ);
         }
 
     }
@@ -67,22 +66,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Retrieve user with the given username
-        User user = userRepo.findByUsername(username);
-        // Check if user exists
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found in the database");
-        } else {
-            // Create a collection of SimpleGrantedAuthority objects from the user's roles
-            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            user.getAuthorities().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
-            });
-            // Return the user details, including the username, password, and authorities
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
-
-        }
+    public AuthenticationDTO loginUser(UserLoginDTO userLoginDTO) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.getUsername(), userLoginDTO.getPassword()));
+        User user = userRepo.findById(userLoginDTO.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationDTO.builder().token(jwtToken).build();
     }
 
 }

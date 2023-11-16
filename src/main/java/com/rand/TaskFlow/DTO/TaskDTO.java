@@ -1,7 +1,7 @@
-package com.rand.TaskFlow.DOT;
+package com.rand.TaskFlow.DTO;
 
-import com.rand.TaskFlow.entity.PriorityStatus;
-import com.rand.TaskFlow.entity.TaskStatus;
+import com.rand.TaskFlow.entity.enums.PriorityStatus;
+import com.rand.TaskFlow.entity.enums.TaskStatus;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter @AllArgsConstructor
-public class TaskDOT {
+public class TaskDTO {
 
     @NotBlank
     private String taskName;

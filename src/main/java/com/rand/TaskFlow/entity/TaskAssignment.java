@@ -1,7 +1,6 @@
 package com.rand.TaskFlow.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import static jakarta.persistence.ConstraintMode.CONSTRAINT;
@@ -17,14 +16,14 @@ public class TaskAssignment {
 
     @ManyToOne
     @JoinColumn(name = "username")
-    private TeamMember teamMember;
+    private Employ employ;
 
     @ManyToOne
     @JoinColumn(name = "task_id", foreignKey = @ForeignKey(value = CONSTRAINT, foreignKeyDefinition = "FOREIGN KEY (task_id) REFERENCES tbl_task(task_id) ON DELETE CASCADE"))
     private Task task;
 
-    public TaskAssignment(TeamMember teamMember, Task task) {
-        this.teamMember = teamMember;
+    public TaskAssignment(Employ employ, Task task) {
+        this.employ = employ;
         this.task = task;
     }
 

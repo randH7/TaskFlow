@@ -1,5 +1,7 @@
 package com.rand.TaskFlow.service.interfaces;
 
+import com.rand.TaskFlow.DTO.AuthenticationDTO;
+import com.rand.TaskFlow.DTO.UserLoginDTO;
 import com.rand.TaskFlow.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +13,7 @@ public interface UserService {
     boolean isUsernameTaken(String username);
 
     boolean isEmailTaken(String email);
+
+    AuthenticationDTO loginUser(UserLoginDTO userLoginDTO);
 
 }

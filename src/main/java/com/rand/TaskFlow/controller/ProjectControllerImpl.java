@@ -1,7 +1,7 @@
 package com.rand.TaskFlow.controller;
 
-import com.rand.TaskFlow.DOT.ListOfProjectsDOT;
-import com.rand.TaskFlow.DOT.ProjectDOT;
+import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
+import com.rand.TaskFlow.DTO.ProjectDTO;
 import com.rand.TaskFlow.service.implementations.ProjectServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 @RestController
-@RequestMapping("/taskflow")
+@RequestMapping("/api/projects")
 public class ProjectControllerImpl {
 
     @Autowired
     ProjectServiceImpl projectService;
 
-    @PostMapping("/projects/create-project")
+    @PostMapping("/create-project")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createProject(@RequestBody @Valid ProjectDOT newProject){
+    public ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO newProject){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String mangerUsername = auth.getPrincipal().toString();
+        String managerUsername = auth.getPrincipal().toString();
 
         try {
-            projectService.createProject(mangerUsername, newProject);
-            return ResponseEntity.status(HttpStatus.CREATED).body(  "["+newProject.getProjectName()+"] Project Created Successfully. Now Let's Start");
+            projectService.createProject(managerUsername, newProject);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Project Created Successfully. Now Let's Start");
         }catch (Exception e){
             String messageError = "Project Not Created Successfully. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
@@ -38,7 +38,7 @@ public class ProjectControllerImpl {
 
     }
 
-    @PatchMapping("/projects/edit-project/{projectId}")
+    @PatchMapping("/edit-project/{projectId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<String> editProject(@PathVariable String projectId,@RequestBody HashMap<String, Object> updatesProject){
 
@@ -58,8 +58,7 @@ public class ProjectControllerImpl {
 
     }
 
-
-    @GetMapping("/projects")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> getProjects() {
 
@@ -68,9 +67,9 @@ public class ProjectControllerImpl {
         String typeRole = auth.getAuthorities().toString();
 
         try{
-            List<ListOfProjectsDOT> projects = projectService.getProjects(username, typeRole);
+            List<ListOfProjectsDTO> projects = projectService.getProjects(username, typeRole);
             String listProjects = "";
-            for (ListOfProjectsDOT project: projects) {
+            for (ListOfProjectsDTO project: projects) {
                 listProjects += project.toString() + "\n";
             }
             return ResponseEntity.status(HttpStatus.OK).body("List of All projects: \n" + listProjects);
@@ -81,7 +80,7 @@ public class ProjectControllerImpl {
 
     }
 
-    @DeleteMapping("/projects/delete-project/{projectId}")
+    @DeleteMapping("/delete-project/{projectId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<String> deleteProject(@PathVariable String projectId){
 
