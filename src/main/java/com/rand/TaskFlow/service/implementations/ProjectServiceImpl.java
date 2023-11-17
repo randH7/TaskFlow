@@ -33,6 +33,8 @@ public class ProjectServiceImpl implements ProjectService {
     private EmployRepository employRepo;
 
     @Autowired
+    private ProjectAssignmentServiceImpl projectAssignmentService;
+    @Autowired
     private ProjectAssignmentRepository projectAssignmentRepo;
 
     @Override
@@ -43,11 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project(newProject.getProjectName(), managerSelected, leaderSelected, newProject.getStartDate(), newProject.getDueDate(), newProject.getDescription(), ProjectStatus.IN_PROGRESS);
         projectRepo.save(project);
 
-        for (String employUsername: newProject.getEmployeesUsername()) {
-            Employ employSelected = employRepo.findByUsername(employUsername);
-            ProjectAssignment projectAssignment = new ProjectAssignment(employSelected, projectRepo.findByProjectName(newProject.getProjectName()));
-            projectAssignmentRepo.save(projectAssignment);
-        }
+        projectAssignmentService.assignProjectToEmployees(newProject.getEmployeesUsername(), projectRepo.findByProjectName(newProject.getProjectName()));
 
     }
 
