@@ -7,7 +7,6 @@ import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
 import com.rand.TaskFlow.entity.*;
 import com.rand.TaskFlow.entity.enums.ProjectStatus;
 import com.rand.TaskFlow.repository.ManagerRepository;
-import com.rand.TaskFlow.repository.ProjectAssignmentRepository;
 import com.rand.TaskFlow.repository.ProjectRepository;
 import com.rand.TaskFlow.repository.EmployRepository;
 import com.rand.TaskFlow.service.interfaces.ProjectService;
@@ -33,8 +32,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectAssignmentServiceImpl projectAssignmentService;
-    @Autowired
-    private ProjectAssignmentRepository projectAssignmentRepo;
 
     @Override
     public void createProject(String managerUsername, AddProjectDTO newProject) {
@@ -118,7 +115,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
         DetailsProjectDTO detailsProject;
-        List<String> employeesUsername = projectAssignmentRepo.findByProjectOrderByEmploy(projectId);
+        List<String> employeesUsername = projectAssignmentService.findByProjectOrderByEmploy(projectId);
 
         if(typeRole.equals("[ROLE_MANAGER]")) {
             detailsProject = projectRepo.findDetailsByIdForManager(projectId, username);

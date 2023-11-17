@@ -71,4 +71,10 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public List<String> findByProjectOrderByEmploy(Integer projectId) {
+        return projectAssignmentRepo.findByProjectOrderByEmploy(projectId);
+    }
+
 }

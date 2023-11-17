@@ -15,4 +15,6 @@ public interface ProjectAssignmentService {
 
     List<ProjectAssignment> IdentifyProjectAssignmentEmployees(List<String> employeesUsername, Project project);
 
+    List<String> findByProjectOrderByEmploy(Integer projectId);
+
 }
