@@ -10,9 +10,7 @@ import com.rand.TaskFlow.service.interfaces.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -47,14 +45,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String editTask(Integer projectId, Integer taskId, HashMap<String, Object> updatesTask) throws ParseException {
+    public String editTask(Integer taskId, HashMap<String, Object> updatesTask) {
 
-        Optional<Task> taskFound = taskRepo.findByTaskIdAndProject(taskId, projectRepo.findByProjectId(projectId));
+        Optional<Task> taskFound = taskRepo.findById(taskId);
 
         if(taskFound.isPresent()) {
             Task existingTask = taskFound.get();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            List<TaskAssignment> newTaskAssignments = new ArrayList<>();
+            List<TaskAssignment> entitiesToDelete = new ArrayList<>();
 
             for (HashMap.Entry<String, Object> entry : updatesTask.entrySet()) {
                 String fieldName = entry.getKey();
@@ -65,7 +63,8 @@ public class TaskServiceImpl implements TaskService {
                         existingTask.setTaskName((String) fieldValue);
                         break;
                     case "dueDate":
-                        //existingTask.setDueDate(new Date(dateFormat.parse((String) fieldValue).getTime()));
+                        String dueDate = fieldValue.toString();
+                        existingTask.setDueDate(java.sql.Date.valueOf(dueDate));
                         break;
                     case "description":
                         existingTask.setDescription((String) fieldValue);
@@ -76,14 +75,18 @@ public class TaskServiceImpl implements TaskService {
                     case "priorityStatus":
                         existingTask.setPriorityStatus(PriorityStatus.valueOf((String)fieldValue));
                         break;
-                    case "teamMember":
-                        if (!isAssignToProject((String)fieldValue, projectId))
-                            return "Not Authorize to Add New Task in This Project.";
-                        taskAssignmentRepo.deleteByTask(taskRepo.findByTaskId(taskId));
-                        TaskAssignment taskAssignment = new TaskAssignment(teamMemberRepo.findByUsername((String)fieldValue), taskRepo.findByTaskId(taskId));
-                        taskAssignmentRepo.save(taskAssignment);
+                    case "employeesUsername":
+                        List<String> employeesUsername = (List<String>)fieldValue;
+                        // Identify entities to delete
+                        entitiesToDelete = taskAssignmentService.IdentifyEntitiesDelete(employeesUsername, existingTask);
+                        // Identify new employees to assign them in the task (new TaskAssignment entities)
+                        newTaskAssignments = taskAssignmentService.IdentifyTaskAssignmentEmployees(employeesUsername, existingTask);
                         break;
                 }
+            }
+
+            if(!newTaskAssignments.isEmpty() || !entitiesToDelete.isEmpty()) {
+                taskAssignmentService.editAssignTaskToEmployees(entitiesToDelete, newTaskAssignments);
             }
 
             taskRepo.save(existingTask);

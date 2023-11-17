@@ -77,10 +77,6 @@ public class ProjectServiceImpl implements ProjectService {
                     case "description":
                         existingProject.setDescription((String) fieldValue);
                         break;
-                    case "startDate":
-                        String startDate = fieldValue.toString();
-                        existingProject.setStartDate(java.sql.Date.valueOf(startDate));
-                        break;
                     case "dueDate":
                         String dueDate = fieldValue.toString();
                         existingProject.setDueDate(java.sql.Date.valueOf(dueDate));

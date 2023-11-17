@@ -36,15 +36,15 @@ public class TaskControllerImpl {
 
     }
 
-    @PatchMapping("/projects/{projectId}/edit-tasks/{taskId}")
+    @PatchMapping("/edit-tasks/{taskId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<String> editTask(@PathVariable Integer projectId, @PathVariable Integer taskId, @RequestBody HashMap<String, Object> updatesTask){
+    public ResponseEntity<String> editTask(@PathVariable Integer taskId, @RequestBody HashMap<String, Object> updatesTask){
 
         try {
-             String message = taskService.editTask(projectId, taskId, updatesTask);
+             String message = taskService.editTask(taskId, updatesTask);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
         }catch (Exception e){
-            String messageError = "Project Not Updated Successfully.";
+            String messageError = "Project Not Updated Successfully. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
         }
 
