@@ -1,6 +1,5 @@
 package com.rand.TaskFlow.service.interfaces;
 
-import com.rand.TaskFlow.DTO.DetailsProject.DetailsProjectDTO;
 import com.rand.TaskFlow.DTO.DetailsProject.DetailsProjectEmployeesDTO;
 import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
 import com.rand.TaskFlow.DTO.AddProjectDTO;

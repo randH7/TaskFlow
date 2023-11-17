@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -56,7 +55,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         if(projectFound.isPresent()){
             Project existingProject = projectFound.get();
-            List<ProjectAssignment> existingProjectAssignments = projectAssignmentRepo.findByProject(existingProject);
             List<ProjectAssignment> newProjectAssignments = new ArrayList<>();
             List<ProjectAssignment> entitiesToDelete = new ArrayList<>();
 
@@ -74,24 +72,10 @@ public class ProjectServiceImpl implements ProjectService {
                         break;
                     case "employeesUsername":
                         List<String> employeesUsername = (List<String>)fieldValue;
-
                         // Identify entities to delete
-                        entitiesToDelete = existingProjectAssignments.stream()
-                                .filter(projectAssignment -> !employeesUsername.contains(projectAssignment.getEmploy().getUsername()))
-                                .collect(Collectors.toList());
-
-                        // Identify new employees to add
-                        List<String> newEmployees = employeesUsername.stream()
-                                .filter(username -> existingProjectAssignments.stream()
-                                        .noneMatch(pa -> pa.getEmploy().getUsername().equals(username)))
-                                .collect(Collectors.toList());
-
-                        // Create new ProjectAssignment entities for new employees
-                        newProjectAssignments = newEmployees.stream()
-                                .map(username -> {
-                                    return new ProjectAssignment(employRepo.findByUsername(username), existingProject);
-                                })
-                                .collect(Collectors.toList());
+                        entitiesToDelete = projectAssignmentService.IdentifyEntitiesDelete(employeesUsername, existingProject);
+                        // Identify new employees to assign them in the project (new ProjectAssignment entities)
+                        newProjectAssignments = projectAssignmentService.IdentifyProjectAssignmentEmployees(employeesUsername, existingProject);
                         break;
                     case "description":
                         existingProject.setDescription((String) fieldValue);
@@ -111,8 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
 
             if(!newProjectAssignments.isEmpty() || !entitiesToDelete.isEmpty()) {
-                projectAssignmentRepo.deleteAll(entitiesToDelete);
-                projectAssignmentRepo.saveAll(newProjectAssignments);
+                projectAssignmentService.editAssignProjectToEmployees(entitiesToDelete, newProjectAssignments);
             }
 
             projectRepo.save(existingProject);
