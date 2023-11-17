@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Getter @Setter
-public class ProjectDTO {
+public class AddProjectDTO {
 
     private String projectName;
 
@@ -22,7 +22,7 @@ public class ProjectDTO {
 
     private List<String> employeesUsername;
 
-    public ProjectDTO(String projectName, String leaderUsername, Date startDate, Date dueDate, String description, String projectStatus, List<String> employeesUsername) {
+    public AddProjectDTO(String projectName, String leaderUsername, Date startDate, Date dueDate, String description, String projectStatus, List<String> employeesUsername) {
         this.projectName = projectName;
         this.leaderUsername = leaderUsername;
         this.startDate = startDate;

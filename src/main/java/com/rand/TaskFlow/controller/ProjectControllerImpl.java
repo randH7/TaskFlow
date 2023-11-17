@@ -1,7 +1,8 @@
 package com.rand.TaskFlow.controller;
 
+import com.rand.TaskFlow.DTO.AddProjectDTO;
+import com.rand.TaskFlow.DTO.DetailsProject.DetailsProjectEmployeesDTO;
 import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
-import com.rand.TaskFlow.DTO.ProjectDTO;
 import com.rand.TaskFlow.service.implementations.ProjectServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectControllerImpl {
@@ -22,7 +24,7 @@ public class ProjectControllerImpl {
 
     @PostMapping("/create-project")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO newProject){
+    public ResponseEntity<String> createProject(@RequestBody @Valid AddProjectDTO newProject){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String managerUsername = auth.getName();
@@ -58,7 +60,7 @@ public class ProjectControllerImpl {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> getProjects() {
+    public ResponseEntity<?> getProjects() {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -66,13 +68,27 @@ public class ProjectControllerImpl {
 
         try{
             List<ListOfProjectsDTO> projects = projectService.getProjects(username, typeRole);
-            String listProjects = "";
-            for (ListOfProjectsDTO project: projects) {
-                listProjects += project.toString() + "\n";
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("List of All projects: \n" + listProjects);
+            return ResponseEntity.status(HttpStatus.OK).body(projects);
         }catch (Exception e){
-            String messageError = "Could not to listing the projects. ";
+            String messageError = "Can not to listing the projects. ";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
+        }
+
+    }
+
+    @GetMapping("/{projectId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getProjectDetails(@PathVariable Integer projectId) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        String typeRole = auth.getAuthorities().toString();
+
+        try{
+            DetailsProjectEmployeesDTO detailsProject = projectService.getProjectDetails(username, typeRole, projectId);
+            return ResponseEntity.status(HttpStatus.OK).body(detailsProject);
+        }catch (Exception e){
+            String messageError = "Can not to listing the projects. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
         }
 

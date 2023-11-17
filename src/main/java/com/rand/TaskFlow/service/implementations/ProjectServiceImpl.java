@@ -1,7 +1,9 @@
 package com.rand.TaskFlow.service.implementations;
 
+import com.rand.TaskFlow.DTO.AddProjectDTO;
+import com.rand.TaskFlow.DTO.DetailsProject.DetailsProjectDTO;
+import com.rand.TaskFlow.DTO.DetailsProject.DetailsProjectEmployeesDTO;
 import com.rand.TaskFlow.DTO.ListOfProjectsDTO;
-import com.rand.TaskFlow.DTO.ProjectDTO;
 import com.rand.TaskFlow.entity.*;
 import com.rand.TaskFlow.entity.enums.ProjectStatus;
 import com.rand.TaskFlow.repository.ManagerRepository;
@@ -34,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectAssignmentRepository projectAssignmentRepo;
 
     @Override
-    public void createProject(String managerUsername, ProjectDTO newProject) {
+    public void createProject(String managerUsername, AddProjectDTO newProject) {
 
         Manager managerSelected = managerRepo.findByUsername(managerUsername);
         Employ leaderSelected = employRepo.findByUsername(newProject.getLeaderUsername());
@@ -125,22 +127,36 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ListOfProjectsDTO> getProjects(String username, String typeRole) {
 
         if(typeRole.equals("[ROLE_MANAGER]"))
-            return projectRepo.findByUsernameForManager(username);
+            return projectRepo.findProjectsByUsernameForManager(username);
         else
-            return projectRepo.findByUsernameForEmploy(username);
+            return projectRepo.findProjectsByUsernameForEmploy(username);
+    }
+
+    @Override
+    public DetailsProjectEmployeesDTO getProjectDetails(String username, String typeRole, Integer projectId) {
+
+
+        DetailsProjectDTO detailsProject;
+        List<String> employeesUsername = projectAssignmentRepo.findByProjectOrderByEmploy(projectId);
+
+        if(typeRole.equals("[ROLE_MANAGER]")) {
+            detailsProject = projectRepo.findDetailsByIdForManager(projectId, username);
+        }
+        else {
+            detailsProject = projectRepo.findDetailsByIdForEmploy(projectId, username);
+        }
+
+        return new DetailsProjectEmployeesDTO(detailsProject, employeesUsername);
+
     }
 
     @Override
     public String deleteProject(Integer projectId) {
 
-        Optional<Project> projectFound = projectRepo.findById(Integer.valueOf(projectId));
+        Optional<Project> projectFound = projectRepo.findById(projectId);
+        projectRepo.deleteById(projectId);
+        return  "["+projectFound.get().getProjectName()+"] Project Deleted Successfully.";
 
-        if(projectFound.isPresent()){
-            projectRepo.deleteById(projectId);
-            return  "["+projectFound.get().getProjectName()+"] Project Deleted Successfully.";
-        }
-
-        return "Project Not Found.";
     }
 
 }

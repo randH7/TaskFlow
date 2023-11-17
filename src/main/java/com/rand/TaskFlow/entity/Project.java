@@ -1,6 +1,5 @@
 package com.rand.TaskFlow.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rand.TaskFlow.entity.enums.ProjectStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

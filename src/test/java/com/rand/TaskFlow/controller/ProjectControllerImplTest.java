@@ -1,7 +1,7 @@
 //package com.rand.TaskFlow.controller;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.rand.TaskFlow.DTO.ProjectDTO;
+//import com.rand.TaskFlow.DTO.AddProjectDTO;
 //import com.rand.TaskFlow.entity.*;
 //import com.rand.TaskFlow.entity.enums.Role;
 //import com.rand.TaskFlow.repository.*;
@@ -109,7 +109,7 @@
 //        teamMembersUsername.add("teamMember1");
 //        teamMembersUsername.add("teamMember2");
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        ProjectDTO projectDTO = new ProjectDTO("SDA web", "teamMember1",  new Date(dateFormat.parse("2024-10-10").getTime()),  new Date(dateFormat.parse("2024-10-15").getTime()), "SDA web.", IN_PROGRESS, teamMembersUsername);
+//        AddProjectDTO projectDTO = new AddProjectDTO("SDA web", "teamMember1",  new Date(dateFormat.parse("2024-10-10").getTime()),  new Date(dateFormat.parse("2024-10-15").getTime()), "SDA web.", IN_PROGRESS, teamMembersUsername);
 //
 //        String body = objectMapper.writeValueAsString(projectDTO);
 //

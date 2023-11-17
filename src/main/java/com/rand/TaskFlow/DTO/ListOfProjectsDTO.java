@@ -1,37 +1,30 @@
 package com.rand.TaskFlow.DTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.rand.TaskFlow.entity.Employ;
-import com.rand.TaskFlow.entity.Manager;
 import com.rand.TaskFlow.entity.enums.ProjectStatus;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Getter @Setter
 public class ListOfProjectsDTO {
 
     private String projectName;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date startDate;
-
-    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dueDate;
 
-    private Manager manager;
+    private String manager;
 
-    private Employ leader;
+    private String leader;
 
-    private ProjectStatus projectStatus;
+    private String projectStatus;
 
-    public ListOfProjectsDTO(String projectName, Date startDate, Date dueDate, Manager manager, Employ leader, ProjectStatus projectStatus) {
+    public ListOfProjectsDTO(String projectName, Date dueDate, String manager, String leader, ProjectStatus projectStatus) {
         this.projectName = projectName;
-        this.startDate = startDate;
         this.dueDate = dueDate;
         this.manager = manager;
         this.leader = leader;
-        this.projectStatus = projectStatus;
+        this.projectStatus = projectStatus.name();
     }
 
 }
