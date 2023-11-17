@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -36,12 +36,10 @@ public class Project {
 
     @NotNull
     @FutureOrPresent
-    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date startDate;
 
     @NotNull
     @FutureOrPresent
-    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dueDate;
 
     @NotBlank

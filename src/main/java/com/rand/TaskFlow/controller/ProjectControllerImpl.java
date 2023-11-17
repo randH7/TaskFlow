@@ -25,7 +25,7 @@ public class ProjectControllerImpl {
     public ResponseEntity<String> createProject(@RequestBody @Valid ProjectDTO newProject){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String managerUsername = auth.getPrincipal().toString();
+        String managerUsername = auth.getName();
 
         try {
             projectService.createProject(managerUsername, newProject);
@@ -40,14 +40,12 @@ public class ProjectControllerImpl {
 
     @PatchMapping("/edit-project/{projectId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<String> editProject(@PathVariable String projectId,@RequestBody HashMap<String, Object> updatesProject){
+    public ResponseEntity<String> editProject(@PathVariable Integer projectId,@RequestBody HashMap<String, Object> updatesProject){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String mangerUsername = auth.getPrincipal().toString();
+        String mangerUsername = auth.getName();
 
         try {
-            if (!projectService.isMangerForProject(mangerUsername, projectId))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Project Not Updated Successfully. Not Authorize to Update this project.") ;
             String message = projectService.editProject(mangerUsername, projectId, updatesProject);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
         }catch (Exception e){
@@ -63,7 +61,7 @@ public class ProjectControllerImpl {
     public ResponseEntity<String> getProjects() {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getPrincipal().toString();
+        String username = auth.getName();
         String typeRole = auth.getAuthorities().toString();
 
         try{
@@ -82,14 +80,9 @@ public class ProjectControllerImpl {
 
     @DeleteMapping("/delete-project/{projectId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<String> deleteProject(@PathVariable String projectId){
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String mangerUsername = auth.getPrincipal().toString();
+    public ResponseEntity<String> deleteProject(@PathVariable Integer projectId){
 
         try {
-            if (!projectService.isMangerForProject(mangerUsername, projectId))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Project Not Deleted Successfully. Not Authorize to Deleted this project.") ;
             String message = projectService.deleteProject(projectId);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
         }catch (Exception e){

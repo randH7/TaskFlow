@@ -12,9 +12,11 @@ import com.rand.TaskFlow.service.interfaces.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -37,28 +39,26 @@ public class ProjectServiceImpl implements ProjectService {
         Manager managerSelected = managerRepo.findByUsername(managerUsername);
         Employ leaderSelected = employRepo.findByUsername(newProject.getLeaderUsername());
         Project project = new Project(newProject.getProjectName(), managerSelected, leaderSelected, newProject.getStartDate(), newProject.getDueDate(), newProject.getDescription(), ProjectStatus.IN_PROGRESS);
-
         projectRepo.save(project);
-        ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelected, projectRepo.findByProjectName(newProject.getProjectName()));
-        projectAssignmentRepo.save(projectAssignment);
 
-        for (String employUsername: newProject.getTeamMembersUsername()) {
+        for (String employUsername: newProject.getEmployeesUsername()) {
             Employ employSelected = employRepo.findByUsername(employUsername);
-            projectAssignment = new ProjectAssignment(employSelected, projectRepo.findByProjectName(newProject.getProjectName()));
+            ProjectAssignment projectAssignment = new ProjectAssignment(employSelected, projectRepo.findByProjectName(newProject.getProjectName()));
             projectAssignmentRepo.save(projectAssignment);
         }
 
     }
 
     @Override
-    public String editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException {
+    public String editProject(String mangerUsername, Integer projectId, HashMap<String, Object> updatesProject) {
 
-        Optional<Project> projectFound = projectRepo.findById(Integer.valueOf(projectId));
+        Optional<Project> projectFound = projectRepo.findById(projectId);
 
         if(projectFound.isPresent()){
             Project existingProject = projectFound.get();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            List<ProjectAssignment> existingProjectAssignments = projectAssignmentRepo.findByProject(existingProject);
+            List<ProjectAssignment> newProjectAssignments = new ArrayList<>();
+            List<ProjectAssignment> entitiesToDelete = new ArrayList<>();
 
             for (HashMap.Entry<String, Object> entry : updatesProject.entrySet()){
                 String fieldName = entry.getKey();
@@ -71,30 +71,48 @@ public class ProjectServiceImpl implements ProjectService {
                     case "leaderUsername":
                         Employ leaderSelected = employRepo.findByUsername((String) fieldValue);
                         existingProject.setLeader(leaderSelected);
-                        if (projectAssignmentRepo.findByEmployAndProject(leaderSelected, existingProject).isEmpty()){
-                            ProjectAssignment projectAssignment = new ProjectAssignment(leaderSelected, existingProject);
-                            projectAssignmentRepo.save(projectAssignment);
-                        }
                         break;
-                    case "teamMembersUsername":
-                        for (String teamMemberUsername: (List<String>)fieldValue) {
-                            Employ employSelected = employRepo.findByUsername(teamMemberUsername);
-                            if (projectAssignmentRepo.findByEmployAndProject(employSelected, existingProject).isEmpty()) {
-                                ProjectAssignment projectAssignment = new ProjectAssignment(employSelected, existingProject);
-                                projectAssignmentRepo.save(projectAssignment);
-                            }
-                        }
+                    case "employeesUsername":
+                        List<String> employeesUsername = (List<String>)fieldValue;
+
+                        // Identify entities to delete
+                        entitiesToDelete = existingProjectAssignments.stream()
+                                .filter(projectAssignment -> !employeesUsername.contains(projectAssignment.getEmploy().getUsername()))
+                                .collect(Collectors.toList());
+
+                        // Identify new employees to add
+                        List<String> newEmployees = employeesUsername.stream()
+                                .filter(username -> existingProjectAssignments.stream()
+                                        .noneMatch(pa -> pa.getEmploy().getUsername().equals(username)))
+                                .collect(Collectors.toList());
+
+                        // Create new ProjectAssignment entities for new employees
+                        newProjectAssignments = newEmployees.stream()
+                                .map(username -> {
+                                    return new ProjectAssignment(employRepo.findByUsername(username), existingProject);
+                                })
+                                .collect(Collectors.toList());
                         break;
                     case "description":
                         existingProject.setDescription((String) fieldValue);
                         break;
+                    case "startDate":
+                        String startDate = fieldValue.toString();
+                        existingProject.setStartDate(java.sql.Date.valueOf(startDate));
+                        break;
                     case "dueDate":
-                        existingProject.setDueDate(new Date(dateFormat.parse((String) fieldValue).getTime()));
+                        String dueDate = fieldValue.toString();
+                        existingProject.setDueDate(java.sql.Date.valueOf(dueDate));
                         break;
                     case "projectStatus":
                         existingProject.setProjectStatus(ProjectStatus.valueOf((String)fieldValue));
                         break;
                 }
+            }
+
+            if(!newProjectAssignments.isEmpty() || !entitiesToDelete.isEmpty()) {
+                projectAssignmentRepo.deleteAll(entitiesToDelete);
+                projectAssignmentRepo.saveAll(newProjectAssignments);
             }
 
             projectRepo.save(existingProject);
@@ -113,25 +131,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public String deleteProject(String projectId) {
+    public String deleteProject(Integer projectId) {
 
         Optional<Project> projectFound = projectRepo.findById(Integer.valueOf(projectId));
 
         if(projectFound.isPresent()){
-            projectRepo.deleteById(Integer.valueOf(projectId));
+            projectRepo.deleteById(projectId);
             return  "["+projectFound.get().getProjectName()+"] Project Deleted Successfully.";
-
         }
+
         return "Project Not Found.";
-    }
-
-    @Override
-    public boolean isMangerForProject(String mangerUsername, String projectId) {
-
-        if(projectRepo.findByManagerAndProjectId(managerRepo.findByUsername(mangerUsername), Integer.valueOf(projectId)).isPresent()){
-            return true;
-        }
-        return false;
     }
 
 }

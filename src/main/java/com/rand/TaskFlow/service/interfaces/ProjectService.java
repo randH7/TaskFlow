@@ -9,14 +9,12 @@ import java.util.List;
 
 public interface ProjectService {
 
-    void createProject(String mangerUsername, ProjectDTO newProject);
+    void createProject(String mangerUsername, ProjectDTO newProject) throws ParseException;
 
-    String editProject(String mangerUsername, String projectId, HashMap<String, Object> updatesProject) throws ParseException;
+    String editProject(String mangerUsername, Integer projectId, HashMap<String, Object> updatesProject) throws ParseException;
 
     List<ListOfProjectsDTO> getProjects(String username, String typeRole);
 
-    boolean isMangerForProject(String mangerUsername, String projectId);
-
-    String deleteProject(String projectId);
+    String deleteProject(Integer projectId);
 
 }
