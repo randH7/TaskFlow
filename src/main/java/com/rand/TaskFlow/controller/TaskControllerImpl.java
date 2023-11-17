@@ -15,21 +15,19 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/taskflow")
+@RequestMapping("/api")
 public class TaskControllerImpl {
 
     @Autowired
     TaskServiceImpl taskService;
 
-    @PostMapping("/projects/{projectId}/add-task")
+    @PostMapping("/add-task")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createProject(@PathVariable Integer projectId, @RequestBody @Valid TaskDTO newTask) {
+    public ResponseEntity<String> createProject(@RequestBody @Valid TaskDTO newTask) {
 
         try {
-            if (!taskService.isAssignToProject(newTask.getTeamMember(), projectId))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not Authorize to Add New Task in This Project.");
-            taskService.createTask(projectId, newTask);
-            return ResponseEntity.status(HttpStatus.CREATED).body(  "["+newTask.getTaskName()+"] Task Created Successfully. Now Let's Start");
+            taskService.createTask(newTask);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Task Created Successfully. Now Let's Start");
         }catch (Exception e){
             String messageError = "Task Not Created Successfully. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;

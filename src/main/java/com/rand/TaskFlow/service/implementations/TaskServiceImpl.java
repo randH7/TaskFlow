@@ -34,16 +34,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     EmployRepository teamMemberRepo;
+    @Autowired
+    TaskAssignmentServiceImpl taskAssignmentService;
 
     @Override
-    public void createTask(Integer projectId, TaskDTO newTask) {
+    public void createTask(TaskDTO newTask) {
 
-        Task task = new Task(newTask.getTaskName(), projectRepo.findByProjectId(projectId), newTask.getStartDate(), newTask.getDueDate(), newTask.getDescription(), newTask.getTaskStatus(), newTask.getPriorityStatus());
+        Task task = new Task(newTask.getTaskName(), projectRepo.findByProjectId(newTask.getProjectId()), newTask.getStartDate(), newTask.getDueDate(), newTask.getDescription(), newTask.getTaskStatus(), newTask.getPriorityStatus());
         taskRepo.save(task);
 
-        TaskAssignment taskAssignment = new TaskAssignment(teamMemberRepo.findByUsername(newTask.getTeamMember()), task);
-        taskAssignmentRepo.save(taskAssignment);
-
+        taskAssignmentService.assignTaskToEmployees(newTask.getEmployeesUsername(), task);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
                         existingTask.setTaskName((String) fieldValue);
                         break;
                     case "dueDate":
-                        existingTask.setDueDate(new Date(dateFormat.parse((String) fieldValue).getTime()));
+                        //existingTask.setDueDate(new Date(dateFormat.parse((String) fieldValue).getTime()));
                         break;
                     case "description":
                         existingTask.setDescription((String) fieldValue);

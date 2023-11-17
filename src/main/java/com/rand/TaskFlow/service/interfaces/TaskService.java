@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    void createTask(Integer projectId, TaskDTO newTask);
+    void createTask(TaskDTO newTask);
 
     String editTask(Integer projectId, Integer taskId, HashMap<String, Object> updatesTask) throws ParseException;
 
