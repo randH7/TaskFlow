@@ -3,7 +3,7 @@ package com.rand.TaskFlow.controller;
 import com.rand.TaskFlow.DTO.AuthenticationDTO;
 import com.rand.TaskFlow.DTO.UserLoginDTO;
 import com.rand.TaskFlow.entity.User;
-import com.rand.TaskFlow.service.interfaces.UserService;
+import com.rand.TaskFlow.service.implementations.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthControllerImpl {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)

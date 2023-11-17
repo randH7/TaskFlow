@@ -32,9 +32,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(PATCH, "/api/manager/invite-employ").hasAnyAuthority("ROLE_MANAGER")
-                        .requestMatchers(PATCH, "/api/manager/remove-employ").hasAnyAuthority("ROLE_MANAGER")
-                        .requestMatchers(PATCH, "/api/manager/get-employees").hasAnyAuthority("ROLE_MANAGER")
+                        .requestMatchers(PATCH, "/api/manager/**").hasAuthority("ROLE_MANAGER")
 
                         .requestMatchers(GET, "/api/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
                         .requestMatchers(POST, "/api/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
@@ -46,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(DELETE, "/api/projects/{projectId}/delete-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
                         .anyRequest().authenticated())
 
-                // Add the custom authentication filter to the http security object
+                // Add the authentication filter to the http security object
                 .authenticationProvider(authenticationProvider)
 
                 // Add the custom authorization filter before the standard authentication filter.
