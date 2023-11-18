@@ -20,7 +20,7 @@ import java.util.List;
 public class ProjectControllerImpl {
 
     @Autowired
-    ProjectServiceImpl projectService;
+    private ProjectServiceImpl projectService;
 
     @PostMapping("/create-project")
     @ResponseStatus(HttpStatus.CREATED)

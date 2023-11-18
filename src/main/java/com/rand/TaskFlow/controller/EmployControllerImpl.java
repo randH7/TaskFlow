@@ -19,7 +19,7 @@ import java.util.List;
 public class EmployControllerImpl {
 
     @Autowired
-    EmployServiceImpl employService;
+    private EmployServiceImpl employService;
 
     @GetMapping("/get-contributor-employees")
     @ResponseStatus(HttpStatus.OK)

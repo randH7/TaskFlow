@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.rand.TaskFlow.entity</OriginalElement>
+  <nodes>
+    <node x="-9.761181026771396" y="366.1019763779527">com.rand.TaskFlow.entity.Manager</node>
+    <node x="-1145.127933271053" y="1029.1198803149612">com.rand.TaskFlow.entity.enums.TaskStatus</node>
+    <node x="-342.6409130708662" y="84.76314960629921">com.rand.TaskFlow.entity.User</node>
+    <node x="-331.6409130708662" y="-84.08841574803151">com.rand.TaskFlow.entity.enums.Role</node>
+    <node x="-844.7493836699213" y="1039.2082960629925">com.rand.TaskFlow.entity.Task</node>
+    <node x="-844.7493836699213" y="664.1213228346456">com.rand.TaskFlow.entity.TaskAssignment</node>
+    <node x="-370.7552823483463" y="664.1213228346456">com.rand.TaskFlow.entity.ProjectAssignment</node>
+    <node x="39.238818973228604" y="1147.2082960629925">com.rand.TaskFlow.entity.enums.ProjectStatus</node>
+    <node x="-844.7493836699213" y="366.1019763779527">com.rand.TaskFlow.entity.Employ</node>
+    <node x="-1145.127933271053" y="1174.2082960629925">com.rand.TaskFlow.entity.enums.PriorityStatus</node>
+    <node x="-365.2552823483463" y="1012.2082960629925">com.rand.TaskFlow.entity.Project</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.rand.TaskFlow.entity.Employ" target="com.rand.TaskFlow.entity.User" relationship="GENERALIZATION">
+      <point x="-2.8346456690542254E-4" y="-59.99997637795275" />
+      <point x="-662.7496671344882" y="326.0" />
+      <point x="-244.64044850393708" y="326.0" />
+      <point x="4.645669291107879E-4" y="100.49985039370077" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.ProjectAssignment" target="com.rand.TaskFlow.entity.Employ" relationship="TO_ONE">
+      <point x="0.0" y="-60.0" />
+      <point x="-245.25528234834633" y="467.457947664126" />
+      <point x="180.83073501530703" y="41.35597128617326" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.ProjectAssignment" target="com.rand.TaskFlow.entity.Project" relationship="TO_ONE">
+      <point x="0.0" y="60.0" />
+      <point x="0.0" y="-141.0" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Employ" target="com.rand.TaskFlow.entity.ProjectAssignment" relationship="TO_MANY">
+      <point x="156.0965931615749" y="60.0" />
+      <point x="-506.65279050834636" y="724.1213228346456" />
+      <point x="-125.5" y="0.0" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Task" target="com.rand.TaskFlow.entity.enums.PriorityStatus" relationship="TO_ONE">
+      <point x="-114.88220773795354" y="75.65955871945494" />
+      <point x="-909.6201030182301" y="1242.3678547824475" />
+      <point x="-909.6201030182301" y="1242.2026084787399" />
+      <point x="77.88118027728899" y="7.994312415747345" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Manager" target="com.rand.TaskFlow.entity.User" relationship="GENERALIZATION">
+      <point x="-4.4094488458767955E-5" y="-46.49997637795275" />
+      <point x="98.73877487874014" y="326.0" />
+      <point x="-244.64044850393708" y="326.0" />
+      <point x="4.645669291107879E-4" y="100.49985039370077" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.User" target="com.rand.TaskFlow.entity.enums.Role" relationship="TO_ONE">
+      <point x="0.0" y="-100.5" />
+      <point x="0.0" y="46.5" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Task" target="com.rand.TaskFlow.entity.enums.TaskStatus" relationship="TO_ONE">
+      <point x="-121.0" y="-77.58841574803137" />
+      <point x="78.5" y="0.0" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Manager" target="com.rand.TaskFlow.entity.Project" relationship="TO_MANY">
+      <point x="-47.86638607118107" y="36.64056158992082" />
+      <point x="50.872432902047535" y="1063.7411240113383" />
+      <point x="115.92512660661339" y="-89.46717205165419" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Project" target="com.rand.TaskFlow.entity.Manager" relationship="TO_ONE">
+      <point x="120.20290382110079" y="-32.237813125040475" />
+      <point x="158.7595761680119" y="1120.970482937952" />
+      <point x="60.0207571947833" y="43.90616963033693" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Project" target="com.rand.TaskFlow.entity.Task" relationship="TO_MANY">
+      <point x="-108.1262274368512" y="86.85523297457325" />
+      <point x="-483.0532483577956" y="1240.0635290375658" />
+      <point x="-483.0532483577956" y="1240.5592495339436" />
+      <point x="118.54186172472407" y="73.85095347095103" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Task" target="com.rand.TaskFlow.entity.Project" relationship="TO_ONE">
+      <point x="121.0" y="-13.5" />
+      <point x="-120.0" y="0.0" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Employ" target="com.rand.TaskFlow.entity.Manager" relationship="TO_ONE">
+      <point x="172.84355993398424" y="2.076358926614148" />
+      <point x="-105.61459103848858" y="15.576358926614148" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.TaskAssignment" target="com.rand.TaskFlow.entity.Task" relationship="TO_ONE">
+      <point x="6.0" y="60.0" />
+      <point x="0.0" y="-127.5" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Project" target="com.rand.TaskFlow.entity.enums.ProjectStatus" relationship="TO_ONE">
+      <point x="120.75884724913266" y="83.0464296617306" />
+      <point x="-43.32983706960687" y="1236.2547257247231" />
+      <point x="-43.32983706960687" y="1236.2547257247231" />
+      <point x="-84.64321076409601" y="15.546429661730599" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Manager" target="com.rand.TaskFlow.entity.Employ" relationship="TO_MANY">
+      <point x="-107.05057692704287" y="-25.347463190475594" />
+      <point x="-245.2161717580599" y="387.25451318747713" />
+      <point x="-245.2161717580599" y="387.25451318747713" />
+      <point x="178.0318580933543" y="-38.847463190475594" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Project" target="com.rand.TaskFlow.entity.Employ" relationship="TO_ONE">
+      <point x="-122.55007643394015" y="-115.11015048063064" />
+      <point x="-585.2493836699213" y="1038.098145582362" />
+      <point x="77.5" y="60.0" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.Employ" target="com.rand.TaskFlow.entity.TaskAssignment" relationship="TO_MANY">
+      <point x="-156.57448404661454" y="57.52118779212594" />
+      <point x="-89.57448404661454" y="-57.70122562519691" />
+    </edge>
+    <edge source="com.rand.TaskFlow.entity.TaskAssignment" target="com.rand.TaskFlow.entity.Employ" relationship="TO_ONE">
+      <point x="63.864296304881805" y="-55.05986175379178" />
+      <point x="-674.0777622777958" y="669.0614610808539" />
+      <point x="-674.0777622777958" y="484.24281479055117" />
+      <point x="7.013279758109775" y="58.14083841259844" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.5288141239173894" showDependencies="true" x="-25.565984251971713" y="739.691653543306" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

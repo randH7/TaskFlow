@@ -20,11 +20,11 @@ import java.util.List;
 public class TaskControllerImpl {
 
     @Autowired
-    TaskServiceImpl taskService;
+    private TaskServiceImpl taskService;
 
     @PostMapping("/add-task")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createProject(@RequestBody @Valid TaskDTO newTask) {
+    public ResponseEntity<String> createTask(@RequestBody @Valid TaskDTO newTask) {
 
         try {
             taskService.createTask(newTask);

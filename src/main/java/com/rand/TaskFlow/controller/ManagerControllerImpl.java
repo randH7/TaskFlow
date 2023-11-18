@@ -18,7 +18,7 @@ import java.util.List;
 public class ManagerControllerImpl {
 
     @Autowired
-    ManagerServiceImpl managerService;
+    private ManagerServiceImpl managerService;
 
     @PatchMapping("/invite-employ")
     @ResponseStatus(HttpStatus.ACCEPTED)

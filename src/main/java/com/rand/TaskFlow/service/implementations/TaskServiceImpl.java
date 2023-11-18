@@ -21,13 +21,13 @@ import java.util.Optional;
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    ProjectRepository projectRepo;
+    private ProjectRepository projectRepo;
 
     @Autowired
-    TaskRepository taskRepo;
+    private TaskRepository taskRepo;
 
     @Autowired
-    TaskAssignmentServiceImpl taskAssignmentService;
+    private TaskAssignmentServiceImpl taskAssignmentService;
 
     @Override
     public void createTask(TaskDTO newTask) {
