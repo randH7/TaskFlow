@@ -24,10 +24,6 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            System.out.println(userRepo.findById(username).get().getUsername());
-            System.out.println(userRepo.findById(username).get().getPassword());
-            System.out.println(userRepo.findById(username).get().getJobTitle());
-            System.out.println(userRepo.findById(username).get().getAuthorities());
             return userRepo.findById(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         };

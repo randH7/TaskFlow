@@ -4,6 +4,7 @@ import com.rand.TaskFlow.filters.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,17 +32,22 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(PATCH, "/api/manager/**").hasAuthority("ROLE_MANAGER")
-                        .requestMatchers(PATCH, "/api/employ/**").hasAuthority("ROLE_EMPLOY")
+
+                        .requestMatchers("/auth/**").permitAll()
+
+                        .requestMatchers("/api/manager/**").hasAuthority("ROLE_MANAGER")
+
+                        .requestMatchers("/api/employ/**").hasAuthority("ROLE_EMPLOY")
+
                         .requestMatchers(GET, "/api/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
-                        .requestMatchers(POST, "/api/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
-                        .requestMatchers(PATCH, "/api/projects/edit-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
-                        .requestMatchers(DELETE, "/api/projects/delete-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
-                        .requestMatchers(POST, "/api/projects/{projectId}/add-task").hasAnyAuthority("ROLE_EMPLOY")
-                        .requestMatchers(GET, "/api/my-tasks").hasAnyAuthority("ROLE_EMPLOY")
-                        .requestMatchers(PATCH, "/api/projects/{projectId}/edit-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
-                        .requestMatchers(DELETE, "/api/projects/{projectId}/delete-tasks/{taskId}").hasAnyAuthority("ROLE_EMPLOY")
+                        .requestMatchers(GET, "/api/projects/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
+                        .requestMatchers(POST, "/api/projects/**").hasAuthority("ROLE_MANAGER")
+                        .requestMatchers(PATCH, "/api/projects/**").hasAuthority("ROLE_MANAGER")
+                        .requestMatchers(DELETE, "/api/projects/**").hasAuthority("ROLE_MANAGER")
+
+
+                        .requestMatchers("/api/tasks/**").hasAuthority("ROLE_EMPLOY")
+
                         .anyRequest().authenticated())
 
                 // Add the authentication filter to the http security object
