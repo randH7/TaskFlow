@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(PATCH, "/api/manager/**").hasAuthority("ROLE_MANAGER")
-
+                        .requestMatchers(PATCH, "/api/employ/**").hasAuthority("ROLE_EMPLOY")
                         .requestMatchers(GET, "/api/projects").hasAnyAuthority("ROLE_MANAGER", "ROLE_EMPLOY")
                         .requestMatchers(POST, "/api/projects/create-project").hasAnyAuthority("ROLE_MANAGER")
                         .requestMatchers(PATCH, "/api/projects/edit-project/{projectId}").hasAnyAuthority("ROLE_MANAGER")
