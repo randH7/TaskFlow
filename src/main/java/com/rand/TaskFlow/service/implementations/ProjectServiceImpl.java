@@ -109,7 +109,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public DetailsProjectEmployeesDTO getProjectDetails(String username, String typeRole, Integer projectId) {
 
-
         DetailsProjectDTO detailsProject;
         List<String> employeesUsername = projectAssignmentService.findByProjectOrderByEmploy(projectId);
 

@@ -1,10 +1,8 @@
 package com.rand.TaskFlow.DTO.DetailsProject;
 
-import com.rand.TaskFlow.entity.enums.ProjectStatus;
-import lombok.Getter;
+import lombok.*;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.util.List;
 
 @Getter

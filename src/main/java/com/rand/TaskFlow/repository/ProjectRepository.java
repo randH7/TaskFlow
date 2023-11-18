@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
+
     Project findByProjectName(String projectName);
 
     @Query("SELECT new com.rand.TaskFlow.DTO.ListOfProjectsDTO(p.projectName, p.dueDate, p.manager.employName, p.leader.employName, p.projectStatus) FROM Project p JOIN ProjectAssignment pa ON p.projectId = pa.project.projectId WHERE pa.employ.username = ?1")

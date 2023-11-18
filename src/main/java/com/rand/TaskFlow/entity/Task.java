@@ -8,6 +8,8 @@ import lombok.*;
 
 import java.sql.Date;
 
+import static jakarta.persistence.ConstraintMode.CONSTRAINT;
+
 @Entity
 @Table(name = "tbl_task")
 @Getter @Setter @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Task {
     private String taskName;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", foreignKey = @ForeignKey(value = CONSTRAINT, foreignKeyDefinition = "FOREIGN KEY (project_id) REFERENCES tbl_project(project_id) ON DELETE CASCADE"))
     @NotNull
     private Project project;
 

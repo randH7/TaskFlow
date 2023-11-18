@@ -71,4 +71,9 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<String> findTaskOrderByByEmploy(Integer taskId) {
+        return taskAssignmentRepo.findTaskOrderByByEmploy(taskId);
+    }
+
 }

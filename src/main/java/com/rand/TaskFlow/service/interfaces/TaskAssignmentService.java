@@ -6,6 +6,7 @@ import com.rand.TaskFlow.entity.TaskAssignment;
 import java.util.List;
 
 public interface TaskAssignmentService {
+
     void assignTaskToEmployees(List<String> employeesUsername, Task task);
 
     void editAssignTaskToEmployees(List<TaskAssignment> entitiesToDelete, List<TaskAssignment> newTaskAssignments);
@@ -13,5 +14,7 @@ public interface TaskAssignmentService {
     List<TaskAssignment> IdentifyEntitiesDelete(List<String> employeesUsername, Task task);
 
     List<TaskAssignment> IdentifyTaskAssignmentEmployees(List<String> employeesUsername, Task task);
+
+    List<String> findTaskOrderByByEmploy(Integer taskId);
 
 }

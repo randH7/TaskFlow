@@ -1,7 +1,6 @@
 package com.rand.TaskFlow.DTO;
 
 import com.rand.TaskFlow.entity.enums.ProjectStatus;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.sql.Date;

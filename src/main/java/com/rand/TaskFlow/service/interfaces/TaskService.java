@@ -1,9 +1,9 @@
 package com.rand.TaskFlow.service.interfaces;
 
+import com.rand.TaskFlow.DTO.DetailsTask.DetailsTaskEmployeesDTO;
 import com.rand.TaskFlow.DTO.ListOfTaskDTO;
 import com.rand.TaskFlow.DTO.TaskDTO;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,8 +15,8 @@ public interface TaskService {
 
     List<ListOfTaskDTO> getTasks(String username);
 
-    String deleteTask(Integer projectId, Integer taskId);
+    DetailsTaskEmployeesDTO getTaskDetails(Integer taskId, String username);
 
-    boolean isAssignToProject(String teamMember, Integer projectId);
+    String deleteTask(Integer taskId);
 
 }

@@ -1,5 +1,6 @@
 package com.rand.TaskFlow.controller;
 
+import com.rand.TaskFlow.DTO.DetailsTask.DetailsTaskEmployeesDTO;
 import com.rand.TaskFlow.DTO.ListOfTaskDTO;
 import com.rand.TaskFlow.DTO.TaskDTO;
 import com.rand.TaskFlow.service.implementations.TaskServiceImpl;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/tasks")
 public class TaskControllerImpl {
 
     @Autowired
@@ -50,35 +51,44 @@ public class TaskControllerImpl {
 
     }
 
-    @GetMapping("/my-tasks")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> getTasks() {
+    public ResponseEntity<?> getTasks() {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getPrincipal().toString();
+        String username = auth.getName();
 
         try{
             List<ListOfTaskDTO> tasks = taskService.getTasks(username);
-            String listTasks = "";
-            for (ListOfTaskDTO task: tasks) {
-                listTasks += task.toString() + "\n";
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("List of All Yours Tasks: \n" + listTasks);
+            return ResponseEntity.status(HttpStatus.OK).body(tasks);
         }catch (Exception e){
             String messageError = "Could not to listing the tasks. ";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
         }
     }
 
-    @DeleteMapping("/projects/{projectId}/delete-tasks/{taskId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<String> deleteTask(@PathVariable Integer projectId, @PathVariable Integer taskId){
+    @GetMapping("/{taskId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getTasksDetails(@PathVariable Integer taskId) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String mangerUsername = auth.getPrincipal().toString();
+        String username = auth.getName();
+
+        try{
+            DetailsTaskEmployeesDTO detailsTasks = taskService.getTaskDetails(taskId, username);
+            return ResponseEntity.status(HttpStatus.OK).body(detailsTasks);
+        }catch (Exception e){
+            String messageError = "Could not to listing the tasks. ";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageError + e.getMessage()) ;
+        }
+    }
+
+    @DeleteMapping("/delete-tasks/{taskId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<String> deleteTask(@PathVariable Integer taskId){
 
         try {
-            String message = taskService.deleteTask(projectId, taskId);
+            String message = taskService.deleteTask(taskId);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
         }catch (Exception e){
             String messageError = "Task Not Deleted Successfully.";

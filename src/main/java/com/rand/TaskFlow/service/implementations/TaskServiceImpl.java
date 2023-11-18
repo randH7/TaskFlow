@@ -1,5 +1,7 @@
 package com.rand.TaskFlow.service.implementations;
 
+import com.rand.TaskFlow.DTO.DetailsTask.DetailsTaskDTO;
+import com.rand.TaskFlow.DTO.DetailsTask.DetailsTaskEmployeesDTO;
 import com.rand.TaskFlow.DTO.ListOfTaskDTO;
 import com.rand.TaskFlow.DTO.TaskDTO;
 import com.rand.TaskFlow.entity.*;
@@ -22,16 +24,8 @@ public class TaskServiceImpl implements TaskService {
     ProjectRepository projectRepo;
 
     @Autowired
-    ProjectAssignmentRepository projectAssignmentRepo;
-
-    @Autowired
     TaskRepository taskRepo;
 
-    @Autowired
-    TaskAssignmentRepository taskAssignmentRepo;
-
-    @Autowired
-    EmployRepository teamMemberRepo;
     @Autowired
     TaskAssignmentServiceImpl taskAssignmentService;
 
@@ -90,7 +84,7 @@ public class TaskServiceImpl implements TaskService {
             }
 
             taskRepo.save(existingTask);
-            return  "["+existingTask.getTaskId()+"] Task Updated Successfully.";
+            return  "Task Updated Successfully.";
 
         }
         return "Task Not Found.";
@@ -103,25 +97,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String deleteTask(Integer projectId, Integer taskId) {
+    public DetailsTaskEmployeesDTO getTaskDetails(Integer taskId, String username) {
 
-        Optional<Task> taskFound = taskRepo.findByTaskIdAndProject(taskId, projectRepo.findByProjectId(projectId));
+        DetailsTaskDTO detailsTask = taskRepo.findDetailsById(taskId, username);
+        List<String> employeesUsername = taskAssignmentService.findTaskOrderByByEmploy(taskId);
 
-        if(taskFound.isPresent()) {
-            taskRepo.deleteById(taskId);
-            return  "["+taskFound.get().getTaskId()+"] Task Deleted Successfully.";
-        }
-
-        return "Project Not Found.";
+        return new DetailsTaskEmployeesDTO(detailsTask, employeesUsername);
 
     }
 
     @Override
-    public boolean isAssignToProject(String teamMember, Integer projectId) {
+    public String deleteTask(Integer taskId) {
 
-        if(projectAssignmentRepo.findByEmployAndProject(teamMemberRepo.findByUsername(teamMember), projectRepo.findByProjectId(projectId)).isPresent())
-            return true;
-        return false;
+        taskRepo.deleteById(taskId);
+        return  "Task Deleted Successfully.";
 
     }
 
