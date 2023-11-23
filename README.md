@@ -1,11 +1,14 @@
-# TaskFlow Pro
-TaskFlow Pro is a practical project that offers hands-on experience in developing a web application for task and project management with a strong focus on collaboration. By using CRUD operations, managing user profiles, and integrating real-time updates through the Spring framework, TaskFlow Pro empowers users to streamline their work and personal projects efficiently.
+# TaskFlow
+TaskFlow is a practical project that offers hands-on experience in developing a web application for task and project management with a strong focus on collaboration. By using CRUD operations, managing user profiles, and integrating real-time updates through the Spring framework, TaskFlow empowers users to streamline their work and personal projects efficiently.
 
 <br>
 
 ## 📝 Class Diagram
-![TaskFlowClass](https://github.com/randH7/TaskFlow/assets/107724456/1bd15627-7ccb-414e-a227-11c460f7ced1)
+![TaskFlowClass.jpg](TaskFlowClass.jpg)
+<br>
 
+## 📝 Use Case Diagram
+![Use case diagram.jpg](Use%20case%20diagram.jpg)
 <br>
 
 ## 📦 Prerequisites
@@ -13,6 +16,7 @@ TaskFlow Pro is a practical project that offers hands-on experience in developin
 - Any IDE support Java and Spring Boot
 - MySQL 8.0
 - MySQL Workbench 8.0
+- Postman
 
   <br>
   
@@ -23,15 +27,16 @@ TaskFlow Pro is a practical project that offers hands-on experience in developin
    
    ```
     spring.datasource.url=jdbc:mysql://localhost:3306/task_flow_schema
-    spring.datasource.username=root
-    spring.datasource.password=root
+    spring.datasource.username=username
+    spring.datasource.password=password
     spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
     spring.jpa.hibernate.ddl-auto=update
     spring.jpa.show-sql=true
     server.error.include-stacktrace=never
    ```
-4. Import the Postman collection from [HERE](https://restless-desert-450152.postman.co/workspace/Team-Workspace~520315af-b391-468e-8ef1-10c57a0ce45b/collection/26776231-ee28c9ce-85a9-454f-b7dd-96ab438c65c9?action=share&creator=26776231) its have all the endpoints.
-5. Run the application.
+4. Run the application.
+5. Import the Postman collection from [HERE](https://restless-desert-450152.postman.co/workspace/Team-Workspace~520315af-b391-468e-8ef1-10c57a0ce45b/collection/26776231-ee28c9ce-85a9-454f-b7dd-96ab438c65c9?action=share&creator=26776231) its have all the endpoints.
+
 
 <br> 
 
@@ -46,38 +51,39 @@ TaskFlow Pro is a practical project that offers hands-on experience in developin
 
 ## 🌐 API Endpoints
 
-### User Authentication and Management:
-- `POST` `http://localhost:8082/taskflow/sign-up?userType={userType}` : Register a new user (both manager and team member). The request body should include the user's registration details in JSON format and `{userType}` could be manger or teamMember only.
+### User Authentication Endpoints
 
-- `GET` `http://localhost:8082/taskflow/signin?usernameOrEmail={usernameOrEmail}&password={password}` : Login an existing user (both manager and team member). The query params should include the user's username or email and the user's password.
+| Method | URL                     | Request Headers               | Request Body                                                                     | Action                                    |
+|--------|-------------------------|-------------------------------|----------------------------------------------------------------------------------|-------------------------------------------|
+| POST   | /auth/sign-up           |                               | { username, email, password, employName, jobTitle },  userType: "manager" / "employ" | Register a new user                       |
+| POST   | /auth/login              |                               | { username, password }                                                           | Log in and return authentication token   |
+| GET    | /auth/verify             | Authorization: Bearer \<token> |                                                                                  | Verify token and return user information |
 
-  
-### Project Management:
-- `POST` `http://localhost:8082/taskflow/projects/create-project` : Create a new project (for any manager). The request body should include the project details in JSON format.
-  
-- `PATCH` `http://localhost:8082/taskflow/projects/edit-project/{projectId}` : Update a project (only for the manager who created the project). The request body should include the updated project details in JSON format and `{projectId}` for the specific project.
-  
-- `DELETE` `http://localhost:8082/taskflow/projects/delete-project/{projectId}` : Delete a project (only for the manager who created the project). Replace `{projectId}` for the specific project.
-  
-- `GET` `http://localhost:8082/taskflow/projects` : This endpoint should return a list of projects created by the manager or that the team member is assigned to.
+### Employ Management Endpoints
 
+| Method | URL                          | Request Headers              | Request Body | Action                                       |
+|-------------------|------------------------------|------------------------------|-|----------------------------------------------|
+| PATCH             | /api/manager/invite-employ    | Authorization: Bearer \<token> | { username } | Invite an employee to the manager's team      |
+| PATCH             | /api/manager/remove-employ    | Authorization: Bearer \<token> | { username } | Remove an employee from the manager's team   |
+| GET               | /api/manager/get-employees    | Authorization: Bearer \<token> | | Get a list of employees under the manager   |
+| GET    | /api/employ/get-contributor-employees | Authorization: Bearer \<token> |                       | Get a list of employees associated with the contributor |
 
-### Task Management:
-- `POST` `http://localhost:8082/taskflow/projects/{projectId}/add-task` : Add a new task to a specific project (for any team member who works on the project). The request body should include the task details in JSON format and `{projectId}` for the specific project.
-  
-- `PATCH` `http://localhost:8082/taskflow/projects/{projectId}/edit-tasks/{taskId}` : Update a task (for any team member). The request body should include the updated task details in JSON format. The path variables should replace `{taskId}` with the specific task ID and `{projectId}` with the specific project that has this task. 
+### Project Management Endpoints
 
-- `DELETE` `http://localhost:8082/taskflow/projects/{projectId}/delete-tasks/{taskId}` : Delete a task (for any team member). The path variables should replace `{taskId}` with the specific task ID and `{projectId}` with the specific project that has this task.
-  
-- `GET` `http://localhost:8082/taskflow/my-tasks` : Retrieve a list of the tasks that the team member who works on in all projects.
+| Method | URL                                        | Request Headers               | Request Body             | Action                                                  |
+|--------|--------------------------------------------|-------------------------------|--------------------------|---------------------------------------------------------|
+| POST   | /api/projects/create-project                | Authorization: Bearer \<token> | AddProjectDTO            | Create a new project                                     |
+| PATCH  | /api/projects/edit-project/{projectId}      | Authorization: Bearer \<token> | HashMap\<String, Object> | Edit an existing project                                  |
+| GET    | /api/projects                                | Authorization: Bearer \<token> |                          | Get a list of projects                                     |
+| GET    | /api/projects/{projectId}                   | Authorization: Bearer \<token> |                          | Get details of a specific project                         |
+| DELETE | /api/projects/delete-project/{projectId}    | Authorization: Bearer \<token> |                          | Delete a project                                          |
 
 <br>
 
 ## 🗃️ Future Work
-- Users can update their profiles, view their task history, and log out.
+- Users can update their profiles.
 - Users can comment on tasks, share files, and have discussions.
 - Users can view the recent Activity for each project.
-- Frontend framework (Angular) for building the user interface.
 - WebSocket for real-time task updates and notifications.
 - Implement email or in-app notifications for task assignments, updates, and reminders.
 
