@@ -18,4 +18,6 @@ public interface ProjectAssignmentRepository extends JpaRepository<ProjectAssign
     @Query("SELECT pa.employ.employName FROM ProjectAssignment pa WHERE pa.project.projectId = ?1")
     List<String> findByProjectOrderByEmploy(Integer projectId);
 
+    @Query("SELECT pa.employ.username FROM ProjectAssignment pa WHERE pa.project.projectId = ?1")
+    List<String> findByProjectOrderByEmployUsernames(Integer projectId);
 }

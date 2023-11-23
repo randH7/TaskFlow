@@ -10,11 +10,13 @@ import java.util.List;
 public class DetailsProjectEmployeesDTO {
 
     private DetailsProjectDTO detailsProjectDTO;
-    private List<String> employeesUsername;
+    private List<String> employeesNames;
+    private List<String> employeesUsernames;
 
-    public DetailsProjectEmployeesDTO(DetailsProjectDTO detailsProjectDTO, List<String>  employeesUsername) {
+    public DetailsProjectEmployeesDTO(DetailsProjectDTO detailsProjectDTO, List<String> employeesNames, List<String> employeesUsernames) {
         this.detailsProjectDTO = detailsProjectDTO;
-        this.employeesUsername = employeesUsername;
+        this.employeesNames = employeesNames;
+        this.employeesUsernames = employeesUsernames;
     }
 
 }

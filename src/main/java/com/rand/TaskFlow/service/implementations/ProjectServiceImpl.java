@@ -81,6 +81,10 @@ public class ProjectServiceImpl implements ProjectService {
                         String dueDate = fieldValue.toString();
                         existingProject.setDueDate(java.sql.Date.valueOf(dueDate));
                         break;
+                    case "startDate":
+                        String startDate = fieldValue.toString();
+                        existingProject.setStartDate(java.sql.Date.valueOf(startDate));
+                        break;
                     case "projectStatus":
                         existingProject.setProjectStatus(ProjectStatus.valueOf((String)fieldValue));
                         break;
@@ -110,7 +114,8 @@ public class ProjectServiceImpl implements ProjectService {
     public DetailsProjectEmployeesDTO getProjectDetails(String username, String typeRole, Integer projectId) {
 
         DetailsProjectDTO detailsProject;
-        List<String> employeesUsername = projectAssignmentService.findByProjectOrderByEmploy(projectId);
+        List<String> employeesUsernames = projectAssignmentService.findByProjectOrderByEmployUsernames(projectId);
+        List<String> employeesNames = projectAssignmentService.findByProjectOrderByEmploy(projectId);
 
         if(typeRole.equals("[ROLE_MANAGER]")) {
             detailsProject = projectRepo.findDetailsByIdForManager(projectId, username);
@@ -119,7 +124,7 @@ public class ProjectServiceImpl implements ProjectService {
             detailsProject = projectRepo.findDetailsByIdForEmploy(projectId, username);
         }
 
-        return new DetailsProjectEmployeesDTO(detailsProject, employeesUsername);
+        return new DetailsProjectEmployeesDTO(detailsProject, employeesNames, employeesUsernames);
 
     }
 

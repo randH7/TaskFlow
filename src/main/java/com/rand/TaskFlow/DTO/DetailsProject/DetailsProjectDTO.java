@@ -12,15 +12,17 @@ public class DetailsProjectDTO {
     private String projectName;
     private String manager;
     private String leader;
+    private String leaderUsername;
     private Date startDate;
     private Date dueDate;
     private String description;
     private String projectStatus;
 
-    public DetailsProjectDTO(String projectName, Date startDate, Date dueDate, String manager, String leader, ProjectStatus projectStatus, String description) {
+    public DetailsProjectDTO(String projectName, Date startDate, Date dueDate, String manager, String leader, String leaderUsername, ProjectStatus projectStatus, String description) {
         this.projectName = projectName;
         this.manager = manager;
         this.leader = leader;
+        this.leaderUsername = leaderUsername;
         this.startDate = startDate;
         this.dueDate = dueDate;
         this.description = description;

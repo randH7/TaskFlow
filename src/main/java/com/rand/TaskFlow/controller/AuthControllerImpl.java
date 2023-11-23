@@ -2,11 +2,15 @@ package com.rand.TaskFlow.controller;
 
 import com.rand.TaskFlow.DTO.AuthenticationDTO;
 import com.rand.TaskFlow.DTO.UserLoginDTO;
+import com.rand.TaskFlow.DTO.UserVerifyDTO;
 import com.rand.TaskFlow.entity.User;
+import com.rand.TaskFlow.repository.UserRepository;
 import com.rand.TaskFlow.service.implementations.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +19,9 @@ public class AuthControllerImpl {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private UserRepository userRepo;
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,6 +47,20 @@ public class AuthControllerImpl {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthenticationDTO> login (@RequestBody @Valid UserLoginDTO userLoginDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.loginUser(userLoginDTO));
+    }
+
+    @GetMapping("/verify")
+    @ResponseStatus(HttpStatus.OK)
+    public UserVerifyDTO verifyToken() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User userFromDb = userRepo.findById(username).get();
+
+        UserVerifyDTO userVerifyDTO = new UserVerifyDTO(userFromDb.getUsername(), userFromDb.getEmail(), userFromDb.getEmployName(), userFromDb.getJobTitle(), userFromDb.getRole());
+
+        return userVerifyDTO;
     }
 
 }

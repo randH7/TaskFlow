@@ -8,6 +8,8 @@ import java.sql.Date;
 @Getter @Setter
 public class ListOfProjectsDTO {
 
+    private Integer projectId;
+
     private String projectName;
 
     private Date dueDate;
@@ -18,7 +20,8 @@ public class ListOfProjectsDTO {
 
     private String projectStatus;
 
-    public ListOfProjectsDTO(String projectName, Date dueDate, String manager, String leader, ProjectStatus projectStatus) {
+    public ListOfProjectsDTO(Integer projectId, String projectName, Date dueDate, String manager, String leader, ProjectStatus projectStatus) {
+        this.projectId = projectId;
         this.projectName = projectName;
         this.dueDate = dueDate;
         this.manager = manager;

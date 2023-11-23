@@ -76,4 +76,9 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
         return projectAssignmentRepo.findByProjectOrderByEmploy(projectId);
     }
 
+    @Override
+    public List<String> findByProjectOrderByEmployUsernames(Integer projectId) {
+        return projectAssignmentRepo.findByProjectOrderByEmployUsernames(projectId);
+    }
+
 }

@@ -17,4 +17,6 @@ public interface ProjectAssignmentService {
 
     List<String> findByProjectOrderByEmploy(Integer projectId);
 
+    List<String> findByProjectOrderByEmployUsernames(Integer projectId);
+
 }
